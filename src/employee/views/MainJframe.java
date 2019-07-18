@@ -17,8 +17,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.BindException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.awt.event.ActionEvent;
 import javax.swing.JPasswordField;
+
+
+
 
 public class MainJframe extends JFrame{
 
@@ -26,7 +36,10 @@ public class MainJframe extends JFrame{
 	private JTextField usernameTF;
 	private JButton btnLogin;
 	private JPasswordField passwordPF;
-
+	private static final int PORT = 9999;
+	private static ServerSocket socket;   
+    public static final String USERS_FILE =  "src/users.txt";
+    
 	/**
 	 * Launch the application.
 	 */
@@ -51,13 +64,28 @@ public class MainJframe extends JFrame{
 			}
 		});
 	}
-
+	
+	private static void checkIfRunning() {
+		  try {
+		    //Bind to localhost adapter with a zero connection queue 
+		    socket = new ServerSocket(PORT,0,InetAddress.getByAddress(new byte[] {127,0,0,1}));
+		  }
+		  catch (BindException e) {
+		    System.err.println("Already running.");
+		    System.exit(1);
+		  }
+		  catch (IOException e) {
+		    System.err.println("Unexpected error.");
+		    e.printStackTrace();
+		    System.exit(2);
+		  }
+		}
 	/**
 	 * Create the frame.
 	 */
 	public MainJframe() {
 		
-		
+		checkIfRunning();
 		initComponents();
 		createEvents();
 		
@@ -72,20 +100,35 @@ public class MainJframe extends JFrame{
 	{
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(!(usernameTF.getText().equals("root")&&passwordPF.getText().equals("root")))
-				{
-				JOptionPane.showMessageDialog(null,"Wrong Password / Username");
-				usernameTF.setText("");
-				passwordPF.setText("");
-				usernameTF.requestFocus();
+				String username = null;
+				String password = null;
+				try {
+					BufferedReader br = new BufferedReader(new FileReader(USERS_FILE));
+			
+					 username = br.readLine();
+					 password = br.readLine();
+					 if(!(usernameTF.getText().equals(username)&&passwordPF.getText().equals(password)))
+						{
+						JOptionPane.showMessageDialog(null,"Wrong Password / Username");
+						usernameTF.setText("");
+						passwordPF.setText("");
+						usernameTF.requestFocus();
+						}
+						else
+						{
+						JOptionPane.showMessageDialog(null,"Welcome back Mr. "+ usernameTF.getText().substring(0, 1).toUpperCase()+usernameTF.getText().substring(1));
+						SelectTask newTask = new SelectTask();
+						newTask.setVisible(true);
+						dispose();
+						}	
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				else
-				{
-				JOptionPane.showMessageDialog(null,"Welcome back "+ usernameTF.getText());
-				SelectTask newTask = new SelectTask();
-				newTask.setVisible(true);
-				dispose();
-				}
+				
+				
 
 			}
 		});
@@ -99,7 +142,7 @@ public class MainJframe extends JFrame{
 	private void initComponents() 
 	{
 		setTitle("Welcome");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(MainJframe.class.getResource("/employee/rescources/SAS_Logo.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MainJframe.class.getResource("/employee/resources/SAS_Logo.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(200, 200, 298, 221);
 		contentPane = new JPanel();

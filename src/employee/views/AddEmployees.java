@@ -25,6 +25,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSetMetaData;
+import java.awt.Toolkit;
+
 public class AddEmployees extends JFrame {
 
 	private JPanel contentPane;
@@ -46,8 +55,17 @@ public class AddEmployees extends JFrame {
     private JComboBox cbCity;
     private JButton btnClear;
     private JButton btnCancel;
-    public static final String DATA_TARGET_PATH =  "targetDatas.txt";
-    public static final String ID_FILE = "idFile.txt";
+    private static String dbURL = "jdbc:derby://localhost:1527/Employee;create=true;user=root;password=root";
+    private static String tableName = "EMPLOYEE";
+    private static Connection conn = null;
+    private static Statement stmt = null;
+    public static final String DATA_TARGET_PATH =  "src/targetDatas.txt";
+    public static final String ID_FILE = "src/idFile.txt";
+    public static final String POSITION =  "src/Positions.txt";
+	public static final String PROF =  "src/Professions.txt";
+	public static final String PROJ =  "src/Projects.txt";
+	public static final String SECTION =  "src/Sections.txt";
+	public static final String CITY =  "src/City.txt";
 	/**
 	 * Launch the application.
 	 */
@@ -63,15 +81,125 @@ public class AddEmployees extends JFrame {
 			}
 		});
 	}
+	
+	
+	
+	
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////// Establishing the connection with the Database.
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	  private static void createConnection()
+	    {
+	        try
+	        {
+	            Class.forName("org.apache.derby.jdbc.ClientDriver").newInstance();
+	            //Get a connection
+	            conn = DriverManager.getConnection(dbURL); 
+	        }
+	        catch (Exception except)
+	        {
+	            JOptionPane.showMessageDialog(null, "Error connecting to the Database!", "Connection Error",JOptionPane.WARNING_MESSAGE);
+	            except.printStackTrace();
+	        }
+	    }
+	  
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////// Adding employees to the Database.
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	  private static void insertEmployees(String fname,String lname,String nationality, String email,String contactLocal,String contactHome,String profession, String position, String section, int grade, String ws, String project, String city, double salary, double otherSalary)
+	    {
+	        try
+	        {
+	            stmt = conn.createStatement();
+	            if(contactHome.equals("Optional")||contactHome.equals("")||contactHome==null)
+	            stmt.execute("insert into " + tableName + " (fname,lname,nationality,email,contactLocal,contactHome,profession,position,section,grade,workingStatus,project,city,salary,otherSalary)"+ " values ('"+fname + "','" + lname + "','" + nationality +"','"+email + "','" + contactLocal + "',NULL,'"+profession+"','"+position+"','"+section+"',"+grade+",'"+ws+"','"+project+"','"+city+"',"+salary+","+otherSalary+")");
+	            else
+	            	stmt.execute("insert into " + tableName + " (fname,lname,nationality,email,contactLocal,contactHome,profession,position,section,grade,workingStatus,project,city,salary,otherSalary)"+ " values ('"+fname + "','" + lname + "','" + nationality +"','"+email + "','" + contactLocal + "','"+contactHome+"','"+profession+"','"+position+"','"+section+"',"+grade+",'"+ws+"','"+project+"','"+city+"',"+salary+","+otherSalary+")");
+	            stmt.close();
+	        }
+	        catch (SQLException sqlExcept)
+	        {
+	            sqlExcept.printStackTrace();
+	        }
+	    }
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////// Viewing the employees in the Database.
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	    private static void selectEmployees()
+	    {
+	        try
+	        {
+	            stmt = conn.createStatement();
+	            ResultSet results = stmt.executeQuery("select * from " + tableName);
+	            ResultSetMetaData rsmd = results.getMetaData();
+	            int numberCols = rsmd.getColumnCount();
+	            for (int i=1; i<=numberCols; i++)
+	            {
+	                //print Column Names
+	                System.out.print(rsmd.getColumnLabel(i)+"\t\t\t");  
+	            }
+
+	            System.out.println("\n-------------------------------------------------");
+
+	            while(results.next())
+	            {
+	                int id = results.getInt(1);
+	                String fName = results.getString(2);
+	                String lName = results.getString(3);
+	                String grade = results.getString(4);
+	                System.out.println(id + "\t\t" + fName + "\t\t" + lName + "\t\t" + grade);
+	            }
+	            results.close();
+	            stmt.close();
+	        }
+	        catch (SQLException sqlExcept)
+	        {
+	            sqlExcept.printStackTrace();
+	        }
+	    }
+	    
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////// Closing the connection between the Database and the Application.
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+	    private static void shutdown()
+	    {
+	        try
+	        {
+	            if (stmt != null)
+	            {
+	                stmt.close();
+	            }
+	            if (conn != null)
+	            {
+	                DriverManager.getConnection(dbURL + ";shutdown=true");
+	                conn.close();
+	            }           
+	        }
+	        catch (SQLException sqlExcept)
+	        {
+	            
+	        }
+
+	    }
+	  
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////// Method to add employees to the text file "targetDatas.txt"
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public static void addE(String data) throws IOException,     NumberFormatException {
         BufferedWriter dataWriter = new BufferedWriter(new FileWriter(DATA_TARGET_PATH,true));
                 dataWriter.append(data);
                 dataWriter.newLine();
                 dataWriter.close();
         }
-	public static int createID()throws IOException,     NumberFormatException{
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////// Method for managing and creating ID numbers for new employees, probably won't use with the DB since ID is generated automatically.
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public static int createID()throws IOException,     NumberFormatException
+	{
 		int newID=0;
-		try {
+		try 
+		{
 
 		    BufferedReader br = new BufferedReader(new FileReader(ID_FILE));
 		    String id=br.readLine();
@@ -87,19 +215,22 @@ public class AddEmployees extends JFrame {
 		    System.out.println("****"+ffs+"****");
 		   	bw.close();
 		    br.close();
-		    }catch (IOException e) {
+		 }
+		catch (IOException e) 
+		{
 		    e.printStackTrace();
 		}
-return newID;
-		} 
+			return newID;
+	}
 	
 
 
 	/**
 	 * Create the frame.
+	 * @throws IOException 
 	 */
-	public AddEmployees() {
-		setTitle("Add Employee");
+	public AddEmployees() throws IOException {
+
 		initComponent();
 		createEvent();
 		
@@ -127,6 +258,99 @@ return newID;
 	    }
 	    return countries;
 	 }
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////// Method to acquire all Professions from file.
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public String[] getAllProfessions() throws IOException {
+		BufferedReader brProf = new BufferedReader(new FileReader(PROF));
+		String[] profession = new String[100];
+		String line;int i=0;
+		while((line = brProf.readLine())!=null)
+		{
+		profession [i] = line;i++;
+		}
+		String [] noNull = new String [i];
+		for (int j =0;j<noNull.length;j++)
+			noNull[j]=profession[j];
+		brProf.close();
+		return noNull;
+	 }
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////// Method to acquire all Positions from file.
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public String[] getAllPositions() throws IOException {
+		BufferedReader brPos = new BufferedReader(new FileReader(POSITION));
+		String[] position = new String[100];
+		String line;int i=0;
+		while((line = brPos.readLine())!=null)
+		{
+		position [i] = line;i++;
+		}
+		String [] noNull = new String [i];
+		for (int j =0;j<noNull.length;j++)
+			noNull[j]=position[j];
+		brPos.close();
+		return noNull;
+	 }
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////// Method to acquire all Sections from file.
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public String[] getAllSections() throws IOException {
+		BufferedReader brSec = new BufferedReader(new FileReader(SECTION));
+		String[] section = new String[100];
+		String line;int i=0;
+		while((line = brSec.readLine())!=null)
+		{
+		section [i] = line;i++;
+		}
+		String [] noNull = new String [i];
+		for (int j =0;j<noNull.length;j++)
+			noNull[j]=section[j];
+		brSec.close();
+		return noNull;
+	 }
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////// Method to acquire all Projects from file.
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public String[] getAllProjects() throws IOException {
+		BufferedReader brProj = new BufferedReader(new FileReader(PROJ));
+		String[] project = new String[100];
+		String line;int i=0;
+		while((line = brProj.readLine())!=null)
+		{
+		project [i] = line;i++;
+		}
+		String [] noNull = new String [i];
+		for (int j =0;j<noNull.length;j++)
+			noNull[j]=project[j];
+		brProj.close();
+		return noNull;
+	 }
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////// Method to acquire all Cities from file.
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public String[] getAllCities() throws IOException {
+		BufferedReader brCity = new BufferedReader(new FileReader(CITY));
+		String[] city = new String[100];
+		String line;int i=0;
+		while((line = brCity.readLine())!=null)
+		{
+		city [i] = line;i++;
+		}
+		String [] noNull = new String [i];
+		for (int j =0;j<noNull.length;j++)
+			noNull[j]=city[j];
+		brCity.close();
+		return noNull;
+	 }
+	
+	
+	
+	
+	
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////// Method to reset all the fields
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void clearAll(){
 		tfFname.setText("");tfFname.setForeground(Color.BLACK);
 		tfLname.setText("");tfLname.setForeground(Color.BLACK);
@@ -144,9 +368,10 @@ return newID;
 		cbProjName.setSelectedIndex(-1);
 		cbCity.setSelectedIndex(-1);
 	}
-	private void initComponent() 
+	private void initComponent() throws IOException 
 	{
-
+		setIconImage(Toolkit.getDefaultToolkit().getImage(AddEmployees.class.getResource("/employee/resources/SAS_Logo.png")));
+		setTitle("Add Employee");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 625, 375);
 		contentPane = new JPanel();
@@ -225,14 +450,20 @@ return newID;
 		tfContactHome.setText("Optional");
 		tfContactHome.setForeground(Color.GRAY);
 		
-		cbProfession = new JComboBox();
+		cbProfession = new JComboBox(getAllProfessions());
 		cbProfession.setBounds(122, 130, 186, 20);
+		cbProfession.insertItemAt(" ", 0);
+		cbProfession.setSelectedIndex(0);
 		
-		cbPosition = new JComboBox();
+		cbPosition = new JComboBox(getAllPositions());
 		cbPosition.setBounds(423, 130, 170, 20);
+		cbPosition.insertItemAt(" ", 0);
+		cbPosition.setSelectedIndex(0);
 		
-		cbSection = new JComboBox();
+		cbSection = new JComboBox(getAllSections());
 		cbSection.setBounds(122, 168, 186, 20);
+		cbSection.insertItemAt(" ", 0);
+		cbSection.setSelectedIndex(0);
 		
 		cbGrade = new JComboBox();
 		cbGrade.setBounds(423, 168, 52, 20);
@@ -245,11 +476,15 @@ return newID;
 		cbWS.setModel(new DefaultComboBoxModel(new String[] {" ", "Business Trip", "Working", "Vacation"}));
 		cbWS.setBounds(122, 206, 186, 20);
 		
-		cbProjName = new JComboBox();
+		cbProjName = new JComboBox(getAllProjects());
 		cbProjName.setBounds(423, 206, 169, 20);
+		cbProjName.insertItemAt(" ", 0);
+		cbProjName.setSelectedIndex(0);
 		
-		cbCity = new JComboBox();
+		cbCity = new JComboBox(getAllCities());
 		cbCity.setBounds(122, 244, 186, 20);
+		cbCity.insertItemAt(" ", 0);
+		cbCity.setSelectedIndex(0);
 		
 		tfSalary = new JTextField();
 		tfSalary.setBounds(423, 244, 169, 20);
@@ -337,13 +572,22 @@ return newID;
 				String conLocal = tfContactLocal.getText();boolean conLocalp = false;
 				String conHome = tfContactHome.getText();boolean conHomep = false;
 				String nationality = (String) cbNationality.getSelectedItem();boolean nationalityp = false;
-				if(fname.equals("")||lname.equals("")||email.equals("")||conLocal.equals("")||nationality.equals(" ")){
-					JOptionPane.showMessageDialog(null, "Please fill in all fields!!!");fnamep=lnamep=emailp=conLocalp=conHomep=nationalityp=false;}
+				String grade =  cbGrade.getSelectedItem()+"";boolean gradep=false;
+				String ws = cbWS.getSelectedItem()+"";boolean wsp=false;
+				String profession = cbProfession.getSelectedItem()+"";boolean profp=false;
+				String position = cbPosition.getSelectedItem()+"";boolean posp=false;
+				String section = cbSection.getSelectedItem()+"";boolean secp=false;
+				String project = cbProjName.getSelectedItem()+"";boolean projp=false;
+				String city = cbCity.getSelectedItem()+"";boolean cityp=false;
+				double salary = 0;
+				double otherSalary = 0;boolean salaryp=true;
+				if(fname.equals("")||lname.equals("")||email.equals("")||conLocal.equals("")||nationality.equals(" ")||grade.equals(" ")||position.equals(" ")||profession.equals(" ")||section.equals(" ")||project.equals(" ")||city.equals(" ")||ws.equals(" ")){
+					JOptionPane.showMessageDialog(null, "Please fill in all the required fields!!!");fnamep=lnamep=emailp=conLocalp=nationalityp=gradep=profp=posp=secp=projp=cityp=wsp=false;}
 				else{
 				try{	
-				double salary = Double.parseDouble(tfSalary.getText());
-				double otherAllowance = Double.parseDouble(tfOtherAllowance.getText());
-				boolean salaryp=true;
+				 salary = Double.parseDouble(tfSalary.getText());
+				 otherSalary = Double.parseDouble(tfOtherAllowance.getText());
+				 salaryp=true;
 				   }
 				catch(Exception e){
 					JOptionPane.showMessageDialog(null,"Please enter a valid salary and allowance. ");
@@ -368,22 +612,29 @@ return newID;
 					}}
 				
 				for(int i =0;i<conHome.length();i++){
-					if ((conHome.charAt(i)>=48&&conHome.charAt(i)<=57)||conHome.equals("")){
+					if ((conHome.charAt(i)>=48&&conHome.charAt(i)<=57)){
 						tfContactHome.setForeground(Color.BLACK);conHomep=true;}
 					else if(conHome.equals("Optional")){
 						tfContactHome.setForeground(Color.GRAY);conHomep=true;}
 					else{
 					JOptionPane.showMessageDialog(null, "Please enter a valid contact number");tfContactHome.setForeground(Color.RED);conHomep=false;break;
 					}}
+				if (conHome.length()==0)conHomep=true;
 				
 				if(tfEmail.getText().indexOf('@')<=0||tfEmail.getText().indexOf('.')<(tfEmail.getText().indexOf('@')+2)){
 					JOptionPane.showMessageDialog(null, "Not a valid mail");tfEmail.setForeground(Color.RED);emailp=false;}
 				else
 					{tfEmail.setForeground(Color.BLACK);emailp = true;}
-				if(!nationality.equals(""))nationalityp=true;
+				if(!nationality.equals("")||!nationality.equals(" "))nationalityp=true;
+				if(!grade.equals("")||!grade.equals(" "))gradep=true;
+				if(!position.equals("")||!position.equals(" "))posp=true;
+				if(!profession.equals("")||!profession.equals(" "))profp=true;
+				if(!section.equals("")||!section.equals(" "))secp=true;
+				if(!project.equals("")||!project.equals(" "))projp=true;
+				if(!city.equals("")||!city.equals(" "))cityp=true;
+				if(!ws.equals("")||!ws.equals(" "))wsp=true;
 				
-				
-				if(fnamep&&lnamep&&emailp&&conLocalp&&conHomep&&nationalityp){
+				if(fnamep&&lnamep&&emailp&&conLocalp&&conHomep&&nationalityp&&gradep&&profp&&posp&&secp&&projp&&cityp&&wsp&&salaryp){
 				System.out.println(tfFname.getText()+" "+tfLname.getText()+" "+tfEmail.getText()+" "+cbGrade.getSelectedItem()+" "+cbNationality.getSelectedItem());
 				//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				////////////////////////////////////////access file
@@ -392,7 +643,7 @@ return newID;
 				try {
 					id = createID();
 				} catch (NumberFormatException | IOException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
 				}
 				String formatted = null;
@@ -400,14 +651,19 @@ return newID;
 				
 				try {
 				
-					addE("2018"+formatted+"  "+tfFname.getText()+" "+tfLname.getText()+" "+tfEmail.getText()+" "+cbGrade.getSelectedItem()+" "+cbNationality.getSelectedItem());
+					addE("2018"+formatted+"  "+tfFname.getText()+"|"+tfLname.getText()+"|"+cbNationality.getSelectedItem()+"|"+tfEmail.getText()+"|"+cbGrade.getSelectedItem());
 				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
+				int gradeInt = (int) cbGrade.getSelectedItem();
+				createConnection();
+		        insertEmployees(fname, lname,nationality,email,conLocal,conHome,profession,position,section,gradeInt,ws,project,city,salary,otherSalary);
+		        selectEmployees();
+		        shutdown();
 				JOptionPane.showMessageDialog(null, "Employee: "+fname+" "+lname+" has been successfully added with ID#2018"+formatted);clearAll();
 																			}
 				}/*End of else for not empty fields*/									   }/*End of Action listener*/
