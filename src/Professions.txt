@@ -1,6 +1,0 @@
-Accountant
-HR Manager
-Network Engineer
-Programmer
-Project Manager
-Receptionist

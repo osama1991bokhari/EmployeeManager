@@ -59,13 +59,13 @@ public class AddEmployees extends JFrame {
     private static String tableName = "EMPLOYEE";
     private static Connection conn = null;
     private static Statement stmt = null;
-    public static final String DATA_TARGET_PATH =  "src/targetDatas.txt";
-    public static final String ID_FILE = "src/idFile.txt";
-    public static final String POSITION =  "src/Positions.txt";
-	public static final String PROF =  "src/Professions.txt";
-	public static final String PROJ =  "src/Projects.txt";
-	public static final String SECTION =  "src/Sections.txt";
-	public static final String CITY =  "src/City.txt";
+    public static final String DATA_TARGET_PATH =  "/employee/resources/targetDatas.txt";
+    public static final String ID_FILE = "/employee/resources/idFile.txt";
+    public static final String POSITION =  "/employee/resources/Positions.txt";
+	public static final String PROF =  "/employee/resources/Professions.txt";
+	public static final String PROJ =  "/employee/resources/Projects.txt";
+	public static final String SECTION =  "/employee/resources/Sections.txt";
+	public static final String CITY =  "/employee/resources/City.txt";
 	/**
 	 * Launch the application.
 	 */
@@ -126,8 +126,8 @@ public class AddEmployees extends JFrame {
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////// Viewing the employees in the Database.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	    private static void selectEmployees()
-	    {
+	    private static int selectEmployees()
+	    {	int id = 0;
 	        try
 	        {
 	            stmt = conn.createStatement();
@@ -141,10 +141,10 @@ public class AddEmployees extends JFrame {
 	            }
 
 	            System.out.println("\n-------------------------------------------------");
-
+	            
 	            while(results.next())
 	            {
-	                int id = results.getInt(1);
+	                id = results.getInt(1);
 	                String fName = results.getString(2);
 	                String lName = results.getString(3);
 	                String grade = results.getString(4);
@@ -152,10 +152,12 @@ public class AddEmployees extends JFrame {
 	            }
 	            results.close();
 	            stmt.close();
+	            return id;
 	        }
 	        catch (SQLException sqlExcept)
 	        {
 	            sqlExcept.printStackTrace();
+	            return id;
 	        }
 	    }
 	    
@@ -262,7 +264,7 @@ public class AddEmployees extends JFrame {
 	//////////////////////// Method to acquire all Professions from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllProfessions() throws IOException {
-		BufferedReader brProf = new BufferedReader(new FileReader(PROF));
+		BufferedReader brProf = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROF)));
 		String[] profession = new String[100];
 		String line;int i=0;
 		while((line = brProf.readLine())!=null)
@@ -279,7 +281,7 @@ public class AddEmployees extends JFrame {
 	//////////////////////// Method to acquire all Positions from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllPositions() throws IOException {
-		BufferedReader brPos = new BufferedReader(new FileReader(POSITION));
+		BufferedReader brPos = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(POSITION)));
 		String[] position = new String[100];
 		String line;int i=0;
 		while((line = brPos.readLine())!=null)
@@ -296,7 +298,7 @@ public class AddEmployees extends JFrame {
 	//////////////////////// Method to acquire all Sections from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllSections() throws IOException {
-		BufferedReader brSec = new BufferedReader(new FileReader(SECTION));
+		BufferedReader brSec = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(SECTION)));
 		String[] section = new String[100];
 		String line;int i=0;
 		while((line = brSec.readLine())!=null)
@@ -313,7 +315,7 @@ public class AddEmployees extends JFrame {
 	//////////////////////// Method to acquire all Projects from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllProjects() throws IOException {
-		BufferedReader brProj = new BufferedReader(new FileReader(PROJ));
+		BufferedReader brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROJ)));
 		String[] project = new String[100];
 		String line;int i=0;
 		while((line = brProj.readLine())!=null)
@@ -330,7 +332,7 @@ public class AddEmployees extends JFrame {
 	//////////////////////// Method to acquire all Cities from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllCities() throws IOException {
-		BufferedReader brCity = new BufferedReader(new FileReader(CITY));
+		BufferedReader brCity = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(CITY)));
 		String[] city = new String[100];
 		String line;int i=0;
 		while((line = brCity.readLine())!=null)
@@ -662,9 +664,9 @@ public class AddEmployees extends JFrame {
 				int gradeInt = (int) cbGrade.getSelectedItem();
 				createConnection();
 		        insertEmployees(fname, lname,nationality,email,conLocal,conHome,profession,position,section,gradeInt,ws,project,city,salary,otherSalary);
-		        selectEmployees();
+		        int ID =selectEmployees();
 		        shutdown();
-				JOptionPane.showMessageDialog(null, "Employee: "+fname+" "+lname+" has been successfully added with ID#2018"+formatted);clearAll();
+				JOptionPane.showMessageDialog(null, "Employee: "+fname+" "+lname+" has been successfully added with ID# "+ID);clearAll();
 																			}
 				}/*End of else for not empty fields*/									   }/*End of Action listener*/
 		});

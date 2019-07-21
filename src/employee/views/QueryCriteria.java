@@ -5,8 +5,10 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.sql.Connection;
@@ -15,6 +17,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSetMetaData;
+import java.util.Date;
 import java.util.Locale;
 
 import javax.swing.JFrame;
@@ -23,6 +26,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
+
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -45,13 +56,13 @@ public class QueryCriteria extends JFrame {
     private JComboBox cbProjName;
     private JComboBox cbCity;
     private JButton btnCancel;
-    public static final String DATA_TARGET_PATH =  "src/targetDatas.txt";
+    public static final String DATA_TARGET_PATH =  "/employee/resources/targetDatas.txt";
     public static final Path DATA_TARGET_PATH2 =  FileSystems.getDefault().getPath(DATA_TARGET_PATH); 
-    public static final String POSITION =  "src/Positions.txt";
-	public static final String PROF =  "src/Professions.txt";
-	public static final String PROJ =  "src/Projects.txt";
-	public static final String SECTION =  "src/Sections.txt";
-	public static final String CITY =  "src/City.txt";
+    public static final String POSITION =  "/employee/resources/Positions.txt";
+	public static final String PROF =  "/employee/resources/Professions.txt";
+	public static final String PROJ =  "/employee/resources/Projects.txt";
+	public static final String SECTION =  "/employee/resources/Sections.txt";
+	public static final String CITY =  "/employee/resources/City.txt";
     private static String dbURL = "jdbc:derby://localhost:1527/Employee;create=true;user=root;password=root";
     private static String tableName = "EMPLOYEE";
     private static Connection conn = null;
@@ -60,6 +71,7 @@ public class QueryCriteria extends JFrame {
     private JButton btnQuery;
     private JLabel lblGrade;
     private JComboBox cbGrade;
+    private JButton btnQueryExport;
 
 	/**
 	 * Launch the application.
@@ -104,7 +116,7 @@ public class QueryCriteria extends JFrame {
 	//////////////////////// Method to acquire all Professions from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllProfessions() throws IOException {
-		BufferedReader brProf = new BufferedReader(new FileReader(PROF));
+		BufferedReader brProf = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROF)));
 		String[] profession = new String[100];
 		String line;int i=0;
 		while((line = brProf.readLine())!=null)
@@ -121,7 +133,7 @@ public class QueryCriteria extends JFrame {
 	//////////////////////// Method to acquire all Positions from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllPositions() throws IOException {
-		BufferedReader brPos = new BufferedReader(new FileReader(POSITION));
+		BufferedReader brPos = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(POSITION)));
 		String[] position = new String[100];
 		String line;int i=0;
 		while((line = brPos.readLine())!=null)
@@ -138,7 +150,7 @@ public class QueryCriteria extends JFrame {
 	//////////////////////// Method to acquire all Sections from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllSections() throws IOException {
-		BufferedReader brSec = new BufferedReader(new FileReader(SECTION));
+		BufferedReader brSec = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(SECTION)));
 		String[] section = new String[100];
 		String line;int i=0;
 		while((line = brSec.readLine())!=null)
@@ -155,7 +167,7 @@ public class QueryCriteria extends JFrame {
 	//////////////////////// Method to acquire all Projects from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllProjects() throws IOException {
-		BufferedReader brProj = new BufferedReader(new FileReader(PROJ));
+		BufferedReader brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROJ)));
 		String[] project = new String[100];
 		String line;int i=0;
 		while((line = brProj.readLine())!=null)
@@ -172,7 +184,7 @@ public class QueryCriteria extends JFrame {
 	//////////////////////// Method to acquire all Cities from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllCities() throws IOException {
-		BufferedReader brCity = new BufferedReader(new FileReader(CITY));
+		BufferedReader brCity = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(CITY)));
 		String[] city = new String[100];
 		String line;int i=0;
 		while((line = brCity.readLine())!=null)
@@ -316,6 +328,7 @@ public class QueryCriteria extends JFrame {
 	 * @throws IOException 
 	 */
 	public QueryCriteria() throws IOException {
+		setResizable(false);
 		initComponent();
 		createEvent();
 		
@@ -351,7 +364,7 @@ public class QueryCriteria extends JFrame {
 				Employees queryResult[] =queryEmployees(criteria);
 				shutdown();
 				if(queryResult[0]!=null){
-				QueryTable table = new QueryTable(queryResult);
+				QueryTableDaialog table = new QueryTableDaialog(queryResult);
 				table.setVisible(true);}
 				}
 				
@@ -363,6 +376,103 @@ public class QueryCriteria extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				SelectTask frame=new SelectTask();
 				frame.setVisible(true);dispose();
+			}
+		});
+		btnQueryExport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				XSSFWorkbook workbook = new XSSFWorkbook();
+				XSSFSheet sheet = workbook.createSheet("ResultExcelSheet");
+				XSSFRow row = sheet.createRow(0);
+				row.createCell(0).setCellValue("ID");
+				row.createCell(1).setCellValue("First Name");
+				row.createCell(2).setCellValue("Last Name");
+				row.createCell(3).setCellValue("Nationality");
+				row.createCell(4).setCellValue("Email");
+				row.createCell(5).setCellValue("Contact Local");
+				row.createCell(6).setCellValue("Contact Home");
+				row.createCell(7).setCellValue("Profession");
+				row.createCell(8).setCellValue("Position");
+				row.createCell(9).setCellValue("Section");
+				row.createCell(10).setCellValue("Grade");
+				row.createCell(11).setCellValue("Working Status");
+				row.createCell(12).setCellValue("Project");
+				row.createCell(13).setCellValue("City");
+				row.createCell(14).setCellValue("Salary");
+				row.createCell(15).setCellValue("Other Allowance");
+				for(int i =0;i<16;i++)
+				sheet.autoSizeColumn(i);
+				
+				XSSFRow row2 = sheet.createRow(1);
+				
+				
+				String ID = null,nationality = null,prof = null,pos = null,sec = null,ws = null,proj = null,city = null;
+				int grade=0;
+				//Checking the ID should take high presidency 
+				if(tfID.getText().length()==0&&cbNationality.getSelectedItem().equals(" ")&&cbProfession.getSelectedItem().equals(" ")&&cbPosition.getSelectedItem().equals(" ")&&cbSection.getSelectedItem().equals(" ")&&cbGrade.getSelectedItem().equals(" ")&&cbWS.getSelectedItem().equals(" ")&&cbProjName.getSelectedItem().equals(" ")&&cbCity.getSelectedItem().equals(" "))
+				JOptionPane.showMessageDialog(null, "Please enter at least one criteria to complete the query!");
+				else
+				{		if(!tfID.getText().equals("all"))
+						for(int i=0;i<tfID.getText().length();i++)
+							if(tfID.getText().charAt(i)<48||tfID.getText().charAt(i)>57){
+								JOptionPane.showMessageDialog(null,	"Please enter a valid employee ID");ID=null;break;}
+							else ID = tfID.getText();
+					nationality = cbNationality.getSelectedItem()+"";
+					prof = cbProfession.getSelectedItem()+"";
+					pos = cbPosition.getSelectedItem()+"";
+					sec = cbSection.getSelectedItem()+"";
+					if(!cbGrade.getSelectedItem().equals(" "))
+					grade = (int) cbGrade.getSelectedItem();
+					ws = cbWS.getSelectedItem()+"";
+					proj = cbProjName.getSelectedItem()+"";
+					city = cbCity.getSelectedItem()+"";
+				String []criteria = new String []{ID,nationality,prof,pos,sec,grade+"",ws,proj,city};
+				createConnection();
+				Employees queryResult[] =queryEmployees(criteria);
+				shutdown();
+				if(queryResult[0]!=null){
+				for(int i=0;i<100;i++){
+					row2 = sheet.createRow(i+1);
+					if(queryResult[i]==null)break;
+				row2.createCell(0).setCellValue(queryResult[i].getID());
+				row2.createCell(1).setCellValue(queryResult[i].getFname());
+				row2.createCell(2).setCellValue(queryResult[i].getLname());
+				row2.createCell(3).setCellValue(queryResult[i].getNationality());
+				row2.createCell(4).setCellValue(queryResult[i].getEmail());
+				row2.createCell(5).setCellValue(queryResult[i].getConLocal());
+				row2.createCell(6).setCellValue(queryResult[i].getConHome());
+				row2.createCell(7).setCellValue(queryResult[i].getProf());
+				row2.createCell(8).setCellValue(queryResult[i].getPos());
+				row2.createCell(9).setCellValue(queryResult[i].getSec());
+				row2.createCell(10).setCellValue(queryResult[i].getGrade());
+				row2.createCell(11).setCellValue(queryResult[i].getWS());
+				row2.createCell(12).setCellValue(queryResult[i].getProj());
+				row2.createCell(13).setCellValue(queryResult[i].getCity());
+				row2.createCell(14).setCellValue(queryResult[i].getSalary());
+				row2.createCell(15).setCellValue(queryResult[i].getOtherSalary());
+				for(int j =0;j<16;j++)
+					sheet.autoSizeColumn(j);}
+				}
+				}
+				/*
+				cell = row.createCell(1);
+				DataFormat format = workbook.createDataFormat();
+				CellStyle dataStyle = workbook.createCellStyle();
+				dataStyle.setDataFormat(format.getFormat("yyyy.mm.dd"));
+				cell.setCellStyle(dataStyle);
+				cell.setCellValue(new Date());
+				sheet.autoSizeColumn(1);
+				row.createCell(2).setCellValue("3. Cell");
+				*/
+				try {
+					workbook.write(new FileOutputStream("Results.xlsx"));
+					workbook.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
 			}
 		});
 		
@@ -479,6 +589,9 @@ public class QueryCriteria extends JFrame {
 		cbGrade.insertItemAt(" ", 0);
 		cbGrade.setSelectedIndex(0);
 		
+		btnQueryExport = new JButton("Query & Export");
+		
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -504,21 +617,25 @@ public class QueryCriteria extends JFrame {
 												.addComponent(cbProfession, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE))
 											.addGap(205))
 										.addGroup(gl_contentPane.createSequentialGroup()
+											.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+												.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+													.addComponent(lblProjectName, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
+													.addGroup(gl_contentPane.createSequentialGroup()
+														.addGap(2)
+														.addComponent(lblProject, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE))
+													.addComponent(lblWorkingStatus, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE))
+												.addComponent(btnQuery, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
 											.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-												.addComponent(lblProjectName, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
 												.addGroup(gl_contentPane.createSequentialGroup()
-													.addGap(2)
-													.addComponent(lblProject, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE))
-												.addComponent(lblWorkingStatus, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE))
-											.addGap(30)
-											.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-												.addComponent(cbCity, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
-												.addComponent(cbProjName, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE)
+													.addGap(30)
+													.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+														.addComponent(cbCity, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
+														.addComponent(cbProjName, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE)))
 												.addGroup(gl_contentPane.createSequentialGroup()
-													.addComponent(btnQuery, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE)
 													.addGap(18)
-													.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)))
-											.addPreferredGap(ComponentPlacement.RELATED)))
+													.addComponent(btnQueryExport)
+													.addGap(18)
+													.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)))))
 									.addGap(185))
 								.addComponent(lblProfission, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE))
 							.addGap(25))
@@ -532,11 +649,11 @@ public class QueryCriteria extends JFrame {
 										.addComponent(cbSection, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE)
 										.addComponent(cbGrade, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
 										.addComponent(cbWS, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE))))
-							.addContainerGap(57, Short.MAX_VALUE))
+							.addContainerGap(67, Short.MAX_VALUE))
 						.addComponent(lblSection, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(lblGrade, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap(680, Short.MAX_VALUE))))
+							.addContainerGap(319, Short.MAX_VALUE))))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -579,9 +696,10 @@ public class QueryCriteria extends JFrame {
 						.addComponent(cbCity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(34)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnQuery)
-						.addComponent(btnCancel))
-					.addGap(65))
+						.addComponent(btnQueryExport)
+						.addComponent(btnCancel)
+						.addComponent(btnQuery))
+					.addGap(75))
 		);
 		contentPane.setLayout(gl_contentPane);
 	}

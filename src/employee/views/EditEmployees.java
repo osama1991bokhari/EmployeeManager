@@ -64,13 +64,13 @@ public class EditEmployees extends JFrame {
     private JComboBox cbProjName;
     private JComboBox cbCity;
     private JButton btnCancel;
-    public static final String DATA_TARGET_PATH =  "src/targetDatas.txt";
+    public static final String DATA_TARGET_PATH =  "/employee/resources/targetDatas.txt";
     public static final Path DATA_TARGET_PATH2 =  FileSystems.getDefault().getPath(DATA_TARGET_PATH); 
-    public static final String POSITION =  "src/Positions.txt";
-	public static final String PROF =  "src/Professions.txt";
-	public static final String PROJ =  "src/Projects.txt";
-	public static final String SECTION =  "src/Sections.txt";
-	public static final String CITY =  "src/City.txt";
+    public static final String POSITION =  "/employee/resources/Positions.txt";
+	public static final String PROF =  "/employee/resources/Professions.txt";
+	public static final String PROJ =  "/employee/resources/Projects.txt";
+	public static final String SECTION =  "/employee/resources/Sections.txt";
+	public static final String CITY =  "/employee/resources/City.txt";
     private static String dbURL = "jdbc:derby://localhost:1527/Employee;create=true;user=root;password=root";
     private static String tableName = "EMPLOYEE";
     private static Connection conn = null;
@@ -211,23 +211,7 @@ public class EditEmployees extends JFrame {
 		Files.write(DATA_TARGET_PATH2, fileContent, StandardCharsets.UTF_8);
         }
 	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////////Method for finding the employee using his ID
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public static String findEmployee(String id) throws IOException,     NumberFormatException
-	{
-		try (BufferedReader br = new BufferedReader(new FileReader(DATA_TARGET_PATH))) {
-		    String line;
-		    while ((line = br.readLine()) != null) {
-		      if(id.equals(line.substring(0, 9))){
-		    	  System.out.println("Employee found");
-		    	  return line;
-		      }
-		    }
-		}
-		
-		return null;
-	}
+	
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////Method for finding the employee using his ID
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -317,7 +301,7 @@ public class EditEmployees extends JFrame {
 	//////////////////////// Method to acquire all Professions from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllProfessions() throws IOException {
-		BufferedReader brProf = new BufferedReader(new FileReader(PROF));
+		BufferedReader brProf = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROF)));
 		String[] profession = new String[100];
 		String line;int i=0;
 		while((line = brProf.readLine())!=null)
@@ -334,7 +318,7 @@ public class EditEmployees extends JFrame {
 	//////////////////////// Method to acquire all Positions from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllPositions() throws IOException {
-		BufferedReader brPos = new BufferedReader(new FileReader(POSITION));
+		BufferedReader brPos = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(POSITION)));
 		String[] position = new String[100];
 		String line;int i=0;
 		while((line = brPos.readLine())!=null)
@@ -351,7 +335,7 @@ public class EditEmployees extends JFrame {
 	//////////////////////// Method to acquire all Sections from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllSections() throws IOException {
-		BufferedReader brSec = new BufferedReader(new FileReader(SECTION));
+		BufferedReader brSec = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(SECTION)));
 		String[] section = new String[100];
 		String line;int i=0;
 		while((line = brSec.readLine())!=null)
@@ -368,7 +352,7 @@ public class EditEmployees extends JFrame {
 	//////////////////////// Method to acquire all Projects from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllProjects() throws IOException {
-		BufferedReader brProj = new BufferedReader(new FileReader(PROJ));
+		BufferedReader brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROJ)));
 		String[] project = new String[100];
 		String line;int i=0;
 		while((line = brProj.readLine())!=null)
@@ -385,7 +369,7 @@ public class EditEmployees extends JFrame {
 	//////////////////////// Method to acquire all Cities from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllCities() throws IOException {
-		BufferedReader brCity = new BufferedReader(new FileReader(CITY));
+		BufferedReader brCity = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(CITY)));
 		String[] city = new String[100];
 		String line;int i=0;
 		while((line = brCity.readLine())!=null)

@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.BindException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -38,7 +39,7 @@ public class MainJframe extends JFrame{
 	private JPasswordField passwordPF;
 	private static final int PORT = 9999;
 	private static ServerSocket socket;   
-    public static final String USERS_FILE =  "src/users.txt";
+    public static final String USERS_FILE =  "/employee/resources/users.txt";
     
 	/**
 	 * Launch the application.
@@ -103,7 +104,7 @@ public class MainJframe extends JFrame{
 				String username = null;
 				String password = null;
 				try {
-					BufferedReader br = new BufferedReader(new FileReader(USERS_FILE));
+					BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(USERS_FILE)));
 			
 					 username = br.readLine();
 					 password = br.readLine();

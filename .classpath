@@ -5,5 +5,9 @@
 	<classpathentry kind="lib" path="E:/EmployeeSheet/derby-10.14.1.0/lib/derbyclient.jar"/>
 	<classpathentry kind="lib" path="E:/EmployeeSheet/poi-3.17/poi-3.17.jar"/>
 	<classpathentry kind="lib" path="E:/EmployeeSheet/poi-3.17/poi-ooxml-3.17.jar"/>
+	<classpathentry kind="lib" path="E:/EmployeeSheet/poi-3.17/ooxml-lib/xmlbeans-2.6.0.jar"/>
+	<classpathentry kind="lib" path="E:/EmployeeSheet/poi-3.17/lib/commons-collections4-4.1.jar"/>
+	<classpathentry kind="lib" path="E:/EmployeeSheet/poi-3.17/poi-scratchpad-3.17.jar"/>
+	<classpathentry kind="lib" path="E:/EmployeeSheet/poi-3.17/poi-ooxml-schemas-3.17.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -7,14 +7,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.net.URISyntaxException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.print.DocFlavor.URL;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -29,11 +37,11 @@ public class EditFields extends JFrame {
 	private JPanel contentPane;
 	private JButton btnCancel;
 	
-	public static final String POSITION =  "src/Positions.txt";
-	public static final String PROF =  "src/Professions.txt";
-	public static final String PROJ =  "src/Projects.txt";
-	public static final String SECTION =  "src/Sections.txt";
-	public static final String CITY =  "src/City.txt";
+	public static final String POSITION =  "/employee/resources/Positions.txt";
+	public static final String PROF =  "/employee/resources/Professions.txt";
+	public static final String PROJ =  "/employee/resources/Projects.txt";
+	public static final String SECTION =  "/employee/resources/Sections.txt";
+	public static final String CITY =  "/employee/resources/City.txt";
 	public String [] profA = new String [100];
 	public String [] posA = new String [100];
 	public String [] secA = new String [100];
@@ -139,11 +147,33 @@ public class EditFields extends JFrame {
 			int choise = JOptionPane.showConfirmDialog(null, "Are you sure you want to save your changes: ","Confirm Changes",  0);
 			if(choise==0)
 			try {
-				BufferedWriter bwPos = new BufferedWriter(new FileWriter(POSITION));
-				BufferedWriter bwProf = new BufferedWriter(new FileWriter(PROF));
-				BufferedWriter bwSec = new BufferedWriter(new FileWriter(SECTION));
-				BufferedWriter bwProj = new BufferedWriter(new FileWriter(PROJ));
-				BufferedWriter bwCity = new BufferedWriter(new FileWriter(CITY));
+				java.net.URL resourceUrl = getClass().getResource(POSITION);
+				File file = new File(resourceUrl.toURI());
+				OutputStream outputStream       = new FileOutputStream(file);
+				BufferedWriter bwPos = new BufferedWriter(new OutputStreamWriter(outputStream));
+				
+				java.net.URL resourceUrl2 = getClass().getResource(PROF);
+				File file2 = new File(resourceUrl2.toURI());
+				OutputStream outputStream2      = new FileOutputStream(file2);
+				BufferedWriter bwProf = new BufferedWriter(new OutputStreamWriter(outputStream2));
+				
+				java.net.URL resourceUrl3 = getClass().getResource(SECTION);
+				File file3 = new File(resourceUrl3.toURI());
+				OutputStream outputStream3      = new FileOutputStream(file3);
+				BufferedWriter bwSec = new BufferedWriter(new OutputStreamWriter(outputStream3));
+				
+				java.net.URL resourceUrl4 = getClass().getResource(PROJ);
+				File file4 = new File(resourceUrl4.toURI());
+				OutputStream outputStream4      = new FileOutputStream(file4);
+				BufferedWriter bwProj = new BufferedWriter(new OutputStreamWriter(outputStream4));
+				
+				java.net.URL resourceUrl5 = getClass().getResource(CITY);
+				File file5 = new File(resourceUrl5.toURI());
+				OutputStream outputStream5      = new FileOutputStream(file5);
+				BufferedWriter bwCity = new BufferedWriter(new OutputStreamWriter(outputStream5));
+				
+				
+				
 				for (int i=0;i<posA.length;i++)
 					if(posA[i]!=null)
 					{
@@ -204,6 +234,9 @@ public class EditFields extends JFrame {
 				frame.setVisible(true);dispose();
 				
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -330,46 +363,65 @@ public class EditFields extends JFrame {
 		scrProf.setViewportView(taProf);
 		contentPane.setLayout(gl_contentPane);
 		
-		BufferedReader brProf = new BufferedReader(new FileReader(PROF));
-		BufferedReader brSec = new BufferedReader(new FileReader(SECTION));
-		BufferedReader brPos = new BufferedReader(new FileReader(POSITION));
-		BufferedReader brProj = new BufferedReader(new FileReader(PROJ));
-		BufferedReader brCity = new BufferedReader(new FileReader(CITY));
-		String line;String full = "";int i = 0;
-		while((line = brCity.readLine())!=null)
+
+
+		String line = null;String full = "";int i = 0;
+		
+		BufferedReader brCity = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(CITY)));
+		while(brCity.ready())
 		{
+			line = brCity.readLine();
 			full = full + line+"\n";
 			cityA [i] = line;i++;
 		}
 			taCity.setText(full);
 			full = "";i=0;
-		while((line = brProj.readLine())!=null)
+			
+			
+		BufferedReader brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROJ)));	
+		while(brProj.ready())
 			{
+			line = brProj.readLine();
 			full = full + line+"\n";
 			projA  [i] = line;
 			}
 			taProj.setText(full);
 			full = "";i=0;
-		while((line = brSec.readLine())!=null)
+			
+		BufferedReader brSec = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(SECTION)));	
+		while(brSec.ready())
 			{
+			line = brSec.readLine();
 			full = full + line+"\n";
 			secA [i] = line;
 			}
 			taSection.setText(full);
 			full = "";i=0;
-		while((line = brPos.readLine())!=null)
+			
+		BufferedReader brPos = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(POSITION)));
+		while(brPos.ready())
 			{
+			line = brPos.readLine();
 			full = full + line+"\n";
 			posA [i] = line;
 			}
 			taPosition.setText(full);
 			full = "";i=0;
-		while((line = brProf.readLine())!=null)
+			
+		BufferedReader brProf = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROF),"UTF-8"));
+		while(brProf.ready())
 			{
+			line = brProf.readLine();
 			full = full + line+"\n";
 			profA [i] = line;
 			}
 			taProf.setText(full);	
+			
+			
+			
+			
+			
+			
 			brCity.close();
 			brSec.close();
 			brProf.close();

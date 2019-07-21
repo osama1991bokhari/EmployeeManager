@@ -19,10 +19,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -38,7 +46,7 @@ public class ChangePassword extends JFrame {
 	private JPasswordField pfOld;
 	private JButton btnCancel;
 	private JButton btnChange;
-    public static final String USERS_FILE =  "src/users.txt";
+    public static final String USERS_FILE =  "/employee/resources/users.txt";
     public static final Path USERS_FILE2 =  FileSystems.getDefault().getPath(USERS_FILE); 
 	/**
 	 * Launch the application.
@@ -72,37 +80,57 @@ public class ChangePassword extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String password = pfOld.getText();
 				
-				List<String> fileContent = null;
-				try {
-					fileContent = new ArrayList<>(Files.readAllLines(USERS_FILE2, StandardCharsets.UTF_8));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				    if (fileContent.get(1).equals(password))
-				    { 
-				        fileContent.set(1, pfNew.getText());
-				        try {
-					if(pfNew.getText().equals(pfConfirm.getText()))
-					{
-					Files.write(USERS_FILE2, fileContent, StandardCharsets.UTF_8);
-					JOptionPane.showMessageDialog(null, "Your password has been changed successfully");
-					SelectTask frame=new SelectTask();
-					frame.setVisible(true);dispose();
+					File file = new File("nbash");
+				    InputStream inputStream = null;
+					try {
+						inputStream = new FileInputStream("nbash");
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
 					}
-					else{
-						JOptionPane.showMessageDialog(null, "Please make sure that password confirmation is correct");
+				    BufferedReader br ;
+				    if(file.exists())
+					 br = new BufferedReader(new InputStreamReader(inputStream));
+				    else
+				     br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(USERS_FILE)));
+					String username = null;
+					String realOldPassword = null;
+					try {
+						username = br.readLine();
+						realOldPassword = br.readLine();
+						br.close();
+					if (realOldPassword.equals(password))			        
+				    	if(pfNew.getText().equals(pfConfirm.getText()))
+				    	{
+				    		try 
+				    		{
+
+							OutputStream outputStream = new FileOutputStream(file);
+							BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(outputStream));
+							bw.write(username);
+							bw.newLine();
+							bw.write(pfNew.getText());
+							bw.close();
+				    		} catch (IOException e1)
+				    		{
+							e1.printStackTrace();
+				    		}
+				    		JOptionPane.showMessageDialog(null, "Your password has been changed successfully");
+				    		SelectTask frame=new SelectTask();
+						frame.setVisible(true);dispose();
 						
 						}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				        
-				    }
+				    	else
+						JOptionPane.showMessageDialog(null, "Please make sure that password confirmation is correct");
+										
 				    else
 				    	JOptionPane.showMessageDialog(null, "Please make sure that the old password is correct");
+						
+						
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+
+				    
 				   
 
 				
