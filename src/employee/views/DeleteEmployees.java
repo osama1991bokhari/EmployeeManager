@@ -10,8 +10,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystems;
@@ -300,11 +304,24 @@ public class DeleteEmployees extends JFrame {
 	        }
 		
 
-	}//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	}
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////// Method to acquire all Professions from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllProfessions() throws IOException {
-		BufferedReader brProf = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROF)));
+		File file = new File("Professions.txt");
+	    InputStream inputStream = null;
+		try{
+			inputStream =  new FileInputStream("Professions.txt");
+		}	 catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		BufferedReader brProf;
+		if(file.exists())
+		brProf = new BufferedReader(new InputStreamReader(inputStream));
+		else
+		brProf = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROF)));
+
 		String[] profession = new String[100];
 		String line;int i=0;
 		while((line = brProf.readLine())!=null)
@@ -321,7 +338,20 @@ public class DeleteEmployees extends JFrame {
 	//////////////////////// Method to acquire all Positions from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllPositions() throws IOException {
-		BufferedReader brPos = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(POSITION)));
+		
+		File file = new File("Positions.txt");
+	    InputStream inputStream = null;
+		try{
+			inputStream =  new FileInputStream("Positions.txt");
+		}catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		BufferedReader brPos;
+		if(file.exists())
+		brPos = new BufferedReader(new InputStreamReader(inputStream));
+		else
+		brPos = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(POSITION)));
+		
 		String[] position = new String[100];
 		String line;int i=0;
 		while((line = brPos.readLine())!=null)
@@ -338,7 +368,20 @@ public class DeleteEmployees extends JFrame {
 	//////////////////////// Method to acquire all Sections from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllSections() throws IOException {
-		BufferedReader brSec = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(SECTION)));
+		File file = new File("Sections.txt");
+	    InputStream inputStream = null;
+		try{
+			inputStream =  new FileInputStream("Sections.txt");
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		BufferedReader brSec;
+		if(file.exists())
+		brSec = new BufferedReader(new InputStreamReader(inputStream));
+		else
+		brSec = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(SECTION)));
+		
 		String[] section = new String[100];
 		String line;int i=0;
 		while((line = brSec.readLine())!=null)
@@ -355,7 +398,19 @@ public class DeleteEmployees extends JFrame {
 	//////////////////////// Method to acquire all Projects from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllProjects() throws IOException {
-		BufferedReader brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROJ)));
+		File file = new File("Projects.txt");
+	    InputStream inputStream = null;
+		try{
+			inputStream =  new FileInputStream("Projects.txt");
+		}catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		BufferedReader brProj;
+		if(file.exists())
+		brProj = new BufferedReader(new InputStreamReader(inputStream));
+		else
+		brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROF)));
+		
 		String[] project = new String[100];
 		String line;int i=0;
 		while((line = brProj.readLine())!=null)
@@ -372,7 +427,19 @@ public class DeleteEmployees extends JFrame {
 	//////////////////////// Method to acquire all Cities from file.
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public String[] getAllCities() throws IOException {
-		BufferedReader brCity = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(CITY)));
+		File file = new File("City.txt");
+	    InputStream inputStream = null;
+		try{
+			inputStream =  new FileInputStream("City.txt");
+		}catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		BufferedReader brCity;
+		if(file.exists())
+		brCity = new BufferedReader(new InputStreamReader(inputStream));
+		else
+		brCity = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(CITY)));
+		
 		String[] city = new String[100];
 		String line;int i=0;
 		while((line = brCity.readLine())!=null)
@@ -385,6 +452,7 @@ public class DeleteEmployees extends JFrame {
 		brCity.close();
 		return noNull;
 	 }
+	
 	
 
 	

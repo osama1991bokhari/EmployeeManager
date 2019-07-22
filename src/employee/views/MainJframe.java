@@ -18,9 +18,12 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.BindException;
 import java.net.InetAddress;
@@ -103,8 +106,20 @@ public class MainJframe extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				String username = null;
 				String password = null;
+				
+				File file = new File("nbash");
+			    InputStream inputStream = null;
+			    try {
+					inputStream = new FileInputStream("nbash");
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			    BufferedReader br ;
+			    if(file.exists())
+				 br = new BufferedReader(new InputStreamReader(inputStream));
+			    else
+			     br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(USERS_FILE)));
 				try {
-					BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(USERS_FILE)));
 			
 					 username = br.readLine();
 					 password = br.readLine();

@@ -8,11 +8,13 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -147,28 +149,24 @@ public class EditFields extends JFrame {
 			int choise = JOptionPane.showConfirmDialog(null, "Are you sure you want to save your changes: ","Confirm Changes",  0);
 			if(choise==0)
 			try {
-				java.net.URL resourceUrl = getClass().getResource(POSITION);
-				File file = new File(resourceUrl.toURI());
+				
+				File file = new File("Positions.txt");
 				OutputStream outputStream       = new FileOutputStream(file);
 				BufferedWriter bwPos = new BufferedWriter(new OutputStreamWriter(outputStream));
 				
-				java.net.URL resourceUrl2 = getClass().getResource(PROF);
-				File file2 = new File(resourceUrl2.toURI());
+				File file2 = new File("Professions.txt");
 				OutputStream outputStream2      = new FileOutputStream(file2);
 				BufferedWriter bwProf = new BufferedWriter(new OutputStreamWriter(outputStream2));
 				
-				java.net.URL resourceUrl3 = getClass().getResource(SECTION);
-				File file3 = new File(resourceUrl3.toURI());
+				File file3 = new File("Sections.txt");
 				OutputStream outputStream3      = new FileOutputStream(file3);
 				BufferedWriter bwSec = new BufferedWriter(new OutputStreamWriter(outputStream3));
 				
-				java.net.URL resourceUrl4 = getClass().getResource(PROJ);
-				File file4 = new File(resourceUrl4.toURI());
+				File file4 = new File("Projects.txt");
 				OutputStream outputStream4      = new FileOutputStream(file4);
 				BufferedWriter bwProj = new BufferedWriter(new OutputStreamWriter(outputStream4));
 				
-				java.net.URL resourceUrl5 = getClass().getResource(CITY);
-				File file5 = new File(resourceUrl5.toURI());
+				File file5 = new File("City.txt");
 				OutputStream outputStream5      = new FileOutputStream(file5);
 				BufferedWriter bwCity = new BufferedWriter(new OutputStreamWriter(outputStream5));
 				
@@ -234,9 +232,6 @@ public class EditFields extends JFrame {
 				frame.setVisible(true);dispose();
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (URISyntaxException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -366,8 +361,38 @@ public class EditFields extends JFrame {
 
 
 		String line = null;String full = "";int i = 0;
+		File file = new File("Positions.txt");
+		File file2 = new File("Professions.txt");
+		File file3 = new File("Sections.txt");
+		File file4 = new File("Projects.txt");
+		File file5 = new File("City.txt");
 		
-		BufferedReader brCity = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(CITY)));
+	    InputStream inputStream = null;
+	    InputStream inputStream2 = null;
+	    InputStream inputStream3 = null;
+	    InputStream inputStream4 = null;
+	    InputStream inputStream5 = null;
+	    
+	    try {
+			 inputStream = new FileInputStream("Positions.txt");
+			 inputStream2 =  new FileInputStream("Professions.txt");
+		     inputStream3 =  new FileInputStream("Sections.txt");
+		     inputStream4 =  new FileInputStream("Projects.txt");
+		     inputStream5 =  new FileInputStream("City.txt");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	    BufferedReader brCity;
+	    BufferedReader brProj;
+	    BufferedReader brSec;
+	    BufferedReader brPos;
+	    BufferedReader brProf;
+	    if(file5.exists())
+		brCity = new BufferedReader(new InputStreamReader(inputStream5));
+	    else
+		brCity = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(CITY)));
+
+	    
 		while(brCity.ready())
 		{
 			line = brCity.readLine();
@@ -377,8 +402,11 @@ public class EditFields extends JFrame {
 			taCity.setText(full);
 			full = "";i=0;
 			
-			
-		BufferedReader brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROJ)));	
+		if(file4.exists())	
+		brProj = new BufferedReader(new InputStreamReader(inputStream4));	
+		else
+		brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROJ)));	
+
 		while(brProj.ready())
 			{
 			line = brProj.readLine();
@@ -387,8 +415,11 @@ public class EditFields extends JFrame {
 			}
 			taProj.setText(full);
 			full = "";i=0;
-			
-		BufferedReader brSec = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(SECTION)));	
+		if(file3.exists())	
+		brSec = new BufferedReader(new InputStreamReader(inputStream3));	
+		else
+		brSec = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(SECTION)));	
+
 		while(brSec.ready())
 			{
 			line = brSec.readLine();
@@ -398,7 +429,11 @@ public class EditFields extends JFrame {
 			taSection.setText(full);
 			full = "";i=0;
 			
-		BufferedReader brPos = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(POSITION)));
+		if(file.exists())
+		brPos = new BufferedReader(new InputStreamReader(inputStream));
+		else
+		brPos = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(POSITION)));
+
 		while(brPos.ready())
 			{
 			line = brPos.readLine();
@@ -407,8 +442,12 @@ public class EditFields extends JFrame {
 			}
 			taPosition.setText(full);
 			full = "";i=0;
-			
-		BufferedReader brProf = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROF),"UTF-8"));
+		if(file2.exists())	
+		brProf = new BufferedReader(new InputStreamReader(inputStream2));
+		else
+		brProf = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROF),"UTF-8"));
+
+		
 		while(brProf.ready())
 			{
 			line = brProf.readLine();
