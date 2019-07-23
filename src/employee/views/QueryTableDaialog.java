@@ -57,23 +57,23 @@ public class QueryTableDaialog extends JDialog {
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{"ID", "First Name", "Last Name", "Nationality", "E-mail", "Contact Local", "Contact Home", "Profession", "Position", "Section", "Grade", "Working Status", "Project", "City", "Salary", "Other Allowance"},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"#", "ID", "First Name", "Last Name", "Nationality", "E-mail", "Contact Local", "Contact Home", "Profession", "Position", "Section", "Grade", "Working Status", "Project", "City", "Salary", "Other Allowance"},
+				{null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{null, "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
 			},
 			new String[] {
-				"New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
+				"New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
 			}
 		));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
@@ -103,44 +103,53 @@ public class QueryTableDaialog extends JDialog {
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{"ID", "First Name", "Last Name", "Nationality", "E-mail", "Contact Local", "Contact Home", "Profession", "Position", "Section", "Grade", "Working Status", "Project", "City", "Salary", "Other Allowance"},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
-				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"#","ID", "First Name", "Last Name", "Nationality", "E-mail", "Contact Local", "Contact Home", "Profession", "Position", "Section", "Grade", "Working Status", "Project", "City", "Salary", "Other Allowance"},
+				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
+				{"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""},
 			},
 			new String[] {
-				"New column", "New column", "New column", "New column", "New column", "New column","New column" , "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
+				"New column", "New column", "New column","New column", "New column", "New column", "New column","New column" , "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
 			}
 		));
+		double salarySum = 0,otherSalarySum = 0;
 		for(int i = 0;i<queryResult.length;i++)
-		{if(queryResult[i]==null)
-			break;
-				table.setValueAt(queryResult[i].getID(), i+1, 0);
-				table.setValueAt(queryResult[i].getFname(), i+1, 1);
-				table.setValueAt(queryResult[i].getLname(), i+1, 2);
-				table.setValueAt(queryResult[i].getNationality(), i+1, 3);
-				table.setValueAt(queryResult[i].getEmail(), i+1, 4);
-				table.setValueAt(queryResult[i].getConLocal(), i+1, 5);
-				table.setValueAt(queryResult[i].getConHome(), i+1, 6);
-				table.setValueAt(queryResult[i].getProf(), i+1, 7);
-				table.setValueAt(queryResult[i].getPos(), i+1, 8);
-				table.setValueAt(queryResult[i].getSec(), i+1, 9);
-				table.setValueAt(queryResult[i].getGrade(), i+1, 10);
-				table.setValueAt(queryResult[i].getWS(), i+1, 11);
-				table.setValueAt(queryResult[i].getProj(), i+1, 12);
-				table.setValueAt(queryResult[i].getCity(), i+1, 13);
-				table.setValueAt(queryResult[i].getSalary(), i+1, 14);
-				table.setValueAt(queryResult[i].getOtherSalary(), i+1, 15);
+		{
+			if(queryResult[i]==null){
+				table.setValueAt("Total:", i+2, 14);
+				table.setValueAt(salarySum, i+2, 15);
+				table.setValueAt(otherSalarySum, i+2, 16);
+				break;}
+				table.setValueAt(i+1, i+1, 0);
+				table.setValueAt(queryResult[i].getID(), i+1, 1);
+				table.setValueAt(queryResult[i].getFname(), i+1, 2);
+				table.setValueAt(queryResult[i].getLname(), i+1, 3);
+				table.setValueAt(queryResult[i].getNationality(), i+1, 4);
+				table.setValueAt(queryResult[i].getEmail(), i+1, 5);
+				table.setValueAt(queryResult[i].getConLocal(), i+1, 6);
+				table.setValueAt(queryResult[i].getConHome(), i+1, 7);
+				table.setValueAt(queryResult[i].getProf(), i+1, 8);
+				table.setValueAt(queryResult[i].getPos(), i+1, 9);
+				table.setValueAt(queryResult[i].getSec(), i+1, 10);
+				table.setValueAt(queryResult[i].getGrade(), i+1, 11);
+				table.setValueAt(queryResult[i].getWS(), i+1, 12);
+				table.setValueAt(queryResult[i].getProj(), i+1, 13);
+				table.setValueAt(queryResult[i].getCity(), i+1, 14);
+				table.setValueAt(queryResult[i].getSalary(), i+1, 15);
+				table.setValueAt(queryResult[i].getOtherSalary(), i+1, 16);
+				salarySum += queryResult[i].getSalary();
+				otherSalarySum += queryResult[i].getOtherSalary();
+				
 				
 		}
 		

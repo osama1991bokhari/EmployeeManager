@@ -364,7 +364,7 @@ public class AddEmployees extends JFrame {
 		if(file.exists())
 		brProj = new BufferedReader(new InputStreamReader(inputStream));
 		else
-		brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROF)));
+		brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROJ)));
 		
 		String[] project = new String[100];
 		String line;int i=0;
@@ -435,9 +435,9 @@ public class AddEmployees extends JFrame {
 	private void initComponent() throws IOException 
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(AddEmployees.class.getResource("/employee/resources/SAS_Logo.png")));
-		setTitle("Add Employee");
+		setTitle("Add Employees  -  \u0625\u0636\u0627\u0641\u0629 \u0645\u0648\u0638\u0641\u064A\u0646");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 625, 375);
+		setBounds(100, 100, 700, 450);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);	
@@ -447,7 +447,7 @@ public class AddEmployees extends JFrame {
 		lblFirstName.setBounds(15, 19, 77, 14);
 		
 		JLabel lblLastName = new JLabel("Last Name:");
-		lblLastName.setBounds(326, 19, 83, 14);
+		lblLastName.setBounds(357, 19, 83, 14);
 		
 		JLabel lblNationality = new JLabel("Nationality:");
 		lblNationality.setBounds(15, 57, 77, 14);
@@ -456,44 +456,44 @@ public class AddEmployees extends JFrame {
 		lblContactNumberlocal.setBounds(15, 95, 140, 14);
 		
 		JLabel lblEmail = new JLabel("E-mail:");
-		lblEmail.setBounds(326, 57, 55, 14);
+		lblEmail.setBounds(357, 57, 55, 14);
 		
 		JLabel lblContactNumberhome = new JLabel("Contact Number (Home):");
-		lblContactNumberhome.setBounds(326, 95, 149, 14);
+		lblContactNumberhome.setBounds(357, 95, 149, 14);
 		
 		JLabel lblProfission = new JLabel("Profession:");
-		lblProfission.setBounds(15, 133, 77, 14);
+		lblProfission.setBounds(15, 146, 77, 14);
 		
 		JLabel lblPosition = new JLabel("Position:");
-		lblPosition.setBounds(326, 133, 68, 14);
+		lblPosition.setBounds(357, 136, 68, 14);
 		
 		JLabel lblSection = new JLabel("Section:");
-		lblSection.setBounds(15, 171, 55, 14);
+		lblSection.setBounds(15, 191, 55, 14);
 		
 		JLabel lblGrade = new JLabel("Grade:");
-		lblGrade.setBounds(326, 171, 55, 14);
+		lblGrade.setBounds(357, 174, 55, 14);
 		
 		JLabel lblWorkingStatus = new JLabel("Working Status:");
-		lblWorkingStatus.setBounds(15, 209, 107, 14);
+		lblWorkingStatus.setBounds(15, 236, 107, 14);
 		
 		JLabel lblProjectName = new JLabel("Project Name:");
-		lblProjectName.setBounds(326, 209, 83, 14);
+		lblProjectName.setBounds(357, 236, 83, 14);
 		
 		JLabel lblProject = new JLabel("City:");
-		lblProject.setBounds(15, 247, 55, 14);
+		lblProject.setBounds(15, 283, 55, 14);
 		
 		JLabel lblSalary = new JLabel("Salary:");
-		lblSalary.setBounds(326, 247, 68, 14);
+		lblSalary.setBounds(357, 283, 68, 14);
 		
 		JLabel lblAllowence = new JLabel("Other Allowance:");
-		lblAllowence.setBounds(15, 286, 107, 14);
+		lblAllowence.setBounds(15, 338, 97, 14);
 		
 		tfFname = new JTextField();
 		tfFname.setBounds(89, 16, 219, 20);
 		tfFname.setColumns(10);
 		
 		tfLname = new JTextField();
-		tfLname.setBounds(432, 16, 161, 20);
+		tfLname.setBounds(505, 16, 161, 20);
 		tfLname.setColumns(10);
 		
 		cbNationality = new JComboBox(getAllCountries());
@@ -501,36 +501,36 @@ public class AddEmployees extends JFrame {
 		cbNationality.insertItemAt(" ", 0);
 		cbNationality.setSelectedIndex(0);
 		tfEmail = new JTextField();
-		tfEmail.setBounds(432, 54, 161, 20);
+		tfEmail.setBounds(507, 54, 161, 20);
 		tfEmail.setColumns(10);
 		
 		tfContactLocal = new JTextField();
-		tfContactLocal.setBounds(165, 92, 143, 20);
+		tfContactLocal.setBounds(152, 92, 156, 20);
 		tfContactLocal.setColumns(10);
 		
 		tfContactHome = new JTextField();
-		tfContactHome.setBounds(473, 92, 120, 20);
+		tfContactHome.setBounds(507, 92, 120, 20);
 		tfContactHome.setColumns(10);
 		tfContactHome.setText("Optional");
 		tfContactHome.setForeground(Color.GRAY);
 		
 		cbProfession = new JComboBox(getAllProfessions());
-		cbProfession.setBounds(122, 130, 186, 20);
+		cbProfession.setBounds(122, 143, 186, 20);
 		cbProfession.insertItemAt(" ", 0);
 		cbProfession.setSelectedIndex(0);
 		
 		cbPosition = new JComboBox(getAllPositions());
-		cbPosition.setBounds(423, 130, 170, 20);
+		cbPosition.setBounds(507, 143, 170, 20);
 		cbPosition.insertItemAt(" ", 0);
 		cbPosition.setSelectedIndex(0);
 		
 		cbSection = new JComboBox(getAllSections());
-		cbSection.setBounds(122, 168, 186, 20);
+		cbSection.setBounds(122, 188, 186, 20);
 		cbSection.insertItemAt(" ", 0);
 		cbSection.setSelectedIndex(0);
 		
 		cbGrade = new JComboBox();
-		cbGrade.setBounds(423, 168, 52, 20);
+		cbGrade.setBounds(507, 188, 52, 20);
 		cbGrade.setModel(new DefaultComboBoxModel());
 		for(int i=10;i<=50;i++)
 			cbGrade.addItem(i);
@@ -538,29 +538,29 @@ public class AddEmployees extends JFrame {
 		
 		cbWS = new JComboBox();
 		cbWS.setModel(new DefaultComboBoxModel(new String[] {" ", "Business Trip", "Working", "Vacation"}));
-		cbWS.setBounds(122, 206, 186, 20);
+		cbWS.setBounds(122, 233, 186, 20);
 		
 		cbProjName = new JComboBox(getAllProjects());
-		cbProjName.setBounds(423, 206, 169, 20);
+		cbProjName.setBounds(507, 233, 169, 20);
 		cbProjName.insertItemAt(" ", 0);
 		cbProjName.setSelectedIndex(0);
 		
 		cbCity = new JComboBox(getAllCities());
-		cbCity.setBounds(122, 244, 186, 20);
+		cbCity.setBounds(122, 280, 186, 20);
 		cbCity.insertItemAt(" ", 0);
 		cbCity.setSelectedIndex(0);
 		
 		tfSalary = new JTextField();
-		tfSalary.setBounds(423, 244, 169, 20);
+		tfSalary.setBounds(507, 283, 169, 20);
 		tfSalary.setColumns(10);
 		
 		tfOtherAllowance = new JTextField();
-		tfOtherAllowance.setBounds(122, 283, 186, 20);
+		tfOtherAllowance.setBounds(122, 335, 186, 20);
 		tfOtherAllowance.setColumns(10);
 		
-		btnAdd = new JButton("Add");
+		btnAdd = new JButton("Add - \u0625\u0636\u0627\u0641\u0629");
 		
-		btnAdd.setBounds(354, 282, 67, 23);
+		btnAdd.setBounds(357, 360, 97, 23);
 		contentPane.setLayout(null);
 		contentPane.add(lblFirstName);
 		contentPane.add(tfFname);
@@ -594,15 +594,75 @@ public class AddEmployees extends JFrame {
 		contentPane.add(cbPosition);
 		contentPane.add(btnAdd);
 		
-		btnClear = new JButton("Clear");
+		btnClear = new JButton("Clear - \u0645\u0633\u062D");
 
-		btnClear.setBounds(433, 282, 67, 23);
+		btnClear.setBounds(460, 360, 97, 23);
 		contentPane.add(btnClear);
 		
-		btnCancel = new JButton("Cancel");
+		btnCancel = new JButton("Back - \u0627\u0644\u0631\u062C\u0648\u0639");
 		
-		btnCancel.setBounds(510, 282, 78, 23);
+		btnCancel.setBounds(567, 360, 107, 23);
 		contentPane.add(btnCancel);
+		
+		JLabel label = new JLabel("\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0623\u062E\u064A\u0631");
+		label.setBounds(354, 31, 58, 14);
+		contentPane.add(label);
+		
+		JLabel label_1 = new JLabel("\u0627\u0644\u0625\u064A\u0645\u064A\u0644");
+		label_1.setBounds(354, 71, 46, 14);
+		contentPane.add(label_1);
+		
+		JLabel label_2 = new JLabel("\u0631\u0642\u0645 \u0627\u0644\u062A\u0648\u0627\u0635\u0644 \u0627\u0644\u062F\u0648\u0644\u064A");
+		label_2.setBounds(354, 109, 113, 14);
+		contentPane.add(label_2);
+		
+		JLabel label_3 = new JLabel("\u0627\u0644\u0645\u0646\u0635\u0628");
+		label_3.setBounds(357, 146, 46, 14);
+		contentPane.add(label_3);
+		
+		JLabel label_4 = new JLabel("\u0627\u0644\u0645\u0631\u062A\u0628\u0629");
+		label_4.setBounds(357, 191, 46, 14);
+		contentPane.add(label_4);
+		
+		JLabel label_5 = new JLabel("\u0627\u0633\u0645 \u0627\u0644\u0645\u0634\u0631\u0648\u0639");
+		label_5.setBounds(357, 247, 68, 14);
+		contentPane.add(label_5);
+		
+		JLabel label_6 = new JLabel("\u0627\u0644\u0631\u0627\u062A\u0628");
+		label_6.setBounds(357, 299, 46, 14);
+		contentPane.add(label_6);
+		
+		JLabel label_7 = new JLabel("\u0627\u0644\u0625\u0633\u0645 \u0627\u0644\u0623\u0648\u0644");
+		label_7.setBounds(15, 32, 64, 14);
+		contentPane.add(label_7);
+		
+		JLabel label_8 = new JLabel("\u0627\u0644\u062C\u0646\u0633\u064A\u0629");
+		label_8.setBounds(15, 71, 46, 14);
+		contentPane.add(label_8);
+		
+		JLabel label_9 = new JLabel("\u0631\u0642\u0645 \u0627\u0644\u062A\u0648\u0627\u0635\u0644 \u0627\u0644\u0645\u062D\u0644\u064A");
+		label_9.setBounds(15, 109, 102, 14);
+		contentPane.add(label_9);
+		
+		JLabel label_10 = new JLabel("\u0627\u0644\u0645\u0647\u0646\u0629");
+		label_10.setBounds(15, 158, 46, 14);
+		contentPane.add(label_10);
+		
+		JLabel label_11 = new JLabel("\u0627\u0644\u0642\u0633\u0645");
+		label_11.setBounds(15, 204, 46, 14);
+		contentPane.add(label_11);
+		
+		JLabel label_12 = new JLabel("\u062D\u0627\u0644\u0629 \u0627\u0644\u0639\u0645\u0644");
+		label_12.setBounds(15, 247, 77, 14);
+		contentPane.add(label_12);
+		
+		JLabel label_13 = new JLabel("\u0627\u0644\u0645\u062F\u064A\u0646\u0629");
+		label_13.setBounds(15, 299, 46, 14);
+		contentPane.add(label_13);
+		
+		JLabel label_14 = new JLabel("\u0627\u0644\u0639\u0644\u0627\u0648\u0627\u062A \u0627\u0644\u0623\u062E\u0631\u0649");
+		label_14.setBounds(10, 351, 82, 14);
+		contentPane.add(label_14);
 	}
 	
 	private void createEvent() 

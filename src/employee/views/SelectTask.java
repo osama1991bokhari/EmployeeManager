@@ -25,6 +25,7 @@ public class SelectTask extends JFrame {
 	private JButton btnQueryEmployee;
 	private JButton btnEditFields;
 	private JButton btnChangePassword;
+	private JLabel lblNewLabel;
 
 	/**
 	 * Launch the application.
@@ -47,7 +48,7 @@ public class SelectTask extends JFrame {
 	 */
 	public SelectTask() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SelectTask.class.getResource("/employee/resources/SAS_Logo.png")));
-		setTitle("Task Selection");
+		setTitle("Task Selection  - \u0627\u062E\u062A\u064A\u0627\u0631 \u0627\u0644\u0645\u0647\u0645\u0629");
 		initComponents();
 		createEvents();
 		
@@ -137,7 +138,7 @@ public class SelectTask extends JFrame {
 	private void initComponents() {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 250);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -145,45 +146,51 @@ public class SelectTask extends JFrame {
 		
 		JLabel lblSelectTheRequired = new JLabel("Select the required task:");
 		
-		btnAddEmployee = new JButton("Add Employee");
+		btnAddEmployee = new JButton("<html>Add Employees<br /> \u0625\u0636\u0627\u0641\u0629 \u0645\u0648\u0638\u0641\u064A\u0646</html>");
 	
 		
-		btnEditEmployee = new JButton("Edit Employee");
+		btnEditEmployee = new JButton("<html>Edit employees<br /> \u062A\u062D\u0631\u064A\u0631 \u0645\u0648\u0638\u0641\u064A\u0646</html>");
 
 		
-		btnDeleteEmployee = new JButton("Delete Employee");
+		btnDeleteEmployee = new JButton("<html>Delete Emplyees<br /> \u0627\u0632\u0627\u0644\u0629 \u0645\u0648\u0638\u0641\u064A\u0646</html>");
 		
 		
-		btnQueryEmployee = new JButton("Query Employees");
+		btnQueryEmployee = new JButton("<html>Query Employees<br /> \u0627\u0644\u0627\u0633\u062A\u0639\u0644\u0627\u0645 \u0639\u0646 \u0645\u0648\u0638\u0641</html>");
 		
 		
-		btnChangePassword = new JButton("Change Password");
+		btnChangePassword = new JButton("<html>Change Password<br /> \u062A\u063A\u064A\u064A\u0631 \u0627\u0644\u0631\u0642\u0645 \u0627\u0644\u0633\u0631\u064A</html>");
 
 		
-		btnEditFields = new JButton("Edit Fields");
+		btnEditFields = new JButton("<html>Edit Fields<br /> \u062A\u062D\u0631\u064A\u0631 \u0627\u0644\u062D\u0642\u0648\u0644</html>");
+		
+		lblNewLabel = new JLabel("\u0627\u0644\u0631\u062C\u0627\u0621 \u0627\u062E\u062A\u064A\u0627\u0631 \u0627\u0644\u0639\u0645\u0644\u064A\u0629 \u0627\u0644\u0645\u0637\u0644\u0648\u0628\u0629");
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(btnChangePassword, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
-						.addComponent(btnDeleteEmployee, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
-						.addComponent(lblSelectTheRequired, Alignment.LEADING)
-						.addComponent(btnAddEmployee, GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
-					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnEditFields, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnEditEmployee, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnQueryEmployee, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnChangePassword, GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+								.addComponent(btnDeleteEmployee, GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+								.addComponent(lblSelectTheRequired)
+								.addComponent(btnAddEmployee, GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnEditFields, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+								.addComponent(btnEditEmployee, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+								.addComponent(btnQueryEmployee, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)))
+						.addComponent(lblNewLabel))
 					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
 					.addComponent(lblSelectTheRequired)
-					.addGap(18)
+					.addGap(4)
+					.addComponent(lblNewLabel)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING, false)
 						.addComponent(btnEditFields, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnChangePassword, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE))

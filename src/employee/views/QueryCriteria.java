@@ -76,6 +76,15 @@ public class QueryCriteria extends JFrame {
     private JLabel lblGrade;
     private JComboBox cbGrade;
     private JButton btnQueryExport;
+    private JLabel label;
+    private JLabel label_1;
+    private JLabel label_2;
+    private JLabel label_3;
+    private JLabel label_4;
+    private JLabel label_5;
+    private JLabel label_6;
+    private JLabel label_7;
+    private JLabel label_8;
 
 	/**
 	 * Launch the application.
@@ -195,7 +204,7 @@ public class QueryCriteria extends JFrame {
 		if(file.exists())
 		brProj = new BufferedReader(new InputStreamReader(inputStream));
 		else
-		brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROF)));
+		brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROJ)));
 		
 		String[] project = new String[100];
 		String line;int i=0;
@@ -438,41 +447,38 @@ public class QueryCriteria extends JFrame {
 			}
 		});
 		
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				SelectTask frame=new SelectTask();
-				frame.setVisible(true);dispose();
-			}
-		});
+		
 		btnQueryExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				XSSFWorkbook workbook = new XSSFWorkbook();
 				XSSFSheet sheet = workbook.createSheet("ResultExcelSheet");
 				XSSFRow row = sheet.createRow(0);
-				row.createCell(0).setCellValue("ID");
-				row.createCell(1).setCellValue("First Name");
-				row.createCell(2).setCellValue("Last Name");
-				row.createCell(3).setCellValue("Nationality");
-				row.createCell(4).setCellValue("Email");
-				row.createCell(5).setCellValue("Contact Local");
-				row.createCell(6).setCellValue("Contact Home");
-				row.createCell(7).setCellValue("Profession");
-				row.createCell(8).setCellValue("Position");
-				row.createCell(9).setCellValue("Section");
-				row.createCell(10).setCellValue("Grade");
-				row.createCell(11).setCellValue("Working Status");
-				row.createCell(12).setCellValue("Project");
-				row.createCell(13).setCellValue("City");
-				row.createCell(14).setCellValue("Salary");
-				row.createCell(15).setCellValue("Other Allowance");
-				for(int i =0;i<16;i++)
+				row.createCell(0).setCellValue("#");
+				row.createCell(1).setCellValue("ID");
+				row.createCell(2).setCellValue("First Name");
+				row.createCell(3).setCellValue("Last Name");
+				row.createCell(4).setCellValue("Nationality");
+				row.createCell(5).setCellValue("Email");
+				row.createCell(6).setCellValue("Contact Local");
+				row.createCell(7).setCellValue("Contact Home");
+				row.createCell(8).setCellValue("Profession");
+				row.createCell(9).setCellValue("Position");
+				row.createCell(10).setCellValue("Section");
+				row.createCell(11).setCellValue("Grade");
+				row.createCell(12).setCellValue("Working Status");
+				row.createCell(13).setCellValue("Project");
+				row.createCell(14).setCellValue("City");
+				row.createCell(15).setCellValue("Salary");
+				row.createCell(16).setCellValue("Other Allowance");
+				for(int i =0;i<17;i++)
 				sheet.autoSizeColumn(i);
 				
 				XSSFRow row2 = sheet.createRow(1);
 				
 				
 				String ID = null,nationality = null,prof = null,pos = null,sec = null,ws = null,proj = null,city = null;
+				double salarySum = 0,otherSalarySum = 0;
 				int grade=0;
 				//Checking the ID should take high presidency 
 				if(tfID.getText().length()==0&&cbNationality.getSelectedItem().equals(" ")&&cbProfession.getSelectedItem().equals(" ")&&cbPosition.getSelectedItem().equals(" ")&&cbSection.getSelectedItem().equals(" ")&&cbGrade.getSelectedItem().equals(" ")&&cbWS.getSelectedItem().equals(" ")&&cbProjName.getSelectedItem().equals(" ")&&cbCity.getSelectedItem().equals(" "))
@@ -499,24 +505,34 @@ public class QueryCriteria extends JFrame {
 				if(queryResult[0]!=null){
 				for(int i=0;i<100;i++){
 					row2 = sheet.createRow(i+1);
-					if(queryResult[i]==null)break;
-				row2.createCell(0).setCellValue(queryResult[i].getID());
-				row2.createCell(1).setCellValue(queryResult[i].getFname());
-				row2.createCell(2).setCellValue(queryResult[i].getLname());
-				row2.createCell(3).setCellValue(queryResult[i].getNationality());
-				row2.createCell(4).setCellValue(queryResult[i].getEmail());
-				row2.createCell(5).setCellValue(queryResult[i].getConLocal());
-				row2.createCell(6).setCellValue(queryResult[i].getConHome());
-				row2.createCell(7).setCellValue(queryResult[i].getProf());
-				row2.createCell(8).setCellValue(queryResult[i].getPos());
-				row2.createCell(9).setCellValue(queryResult[i].getSec());
-				row2.createCell(10).setCellValue(queryResult[i].getGrade());
-				row2.createCell(11).setCellValue(queryResult[i].getWS());
-				row2.createCell(12).setCellValue(queryResult[i].getProj());
-				row2.createCell(13).setCellValue(queryResult[i].getCity());
-				row2.createCell(14).setCellValue(queryResult[i].getSalary());
-				row2.createCell(15).setCellValue(queryResult[i].getOtherSalary());
-				for(int j =0;j<16;j++)
+					if(queryResult[i]==null){
+						row2 =sheet.createRow(i+2);
+						row2.createCell(14).setCellValue("Total:");
+						row2.createCell(15).setCellValue(salarySum);
+						row2.createCell(16).setCellValue(otherSalarySum);
+						sheet.autoSizeColumn(14);sheet.autoSizeColumn(15);sheet.autoSizeColumn(16);
+						break;}
+					
+				row2.createCell(0).setCellValue(i+1);
+				row2.createCell(1).setCellValue(queryResult[i].getID());
+				row2.createCell(2).setCellValue(queryResult[i].getFname());
+				row2.createCell(3).setCellValue(queryResult[i].getLname());
+				row2.createCell(4).setCellValue(queryResult[i].getNationality());
+				row2.createCell(5).setCellValue(queryResult[i].getEmail());
+				row2.createCell(6).setCellValue(queryResult[i].getConLocal());
+				row2.createCell(7).setCellValue(queryResult[i].getConHome());
+				row2.createCell(8).setCellValue(queryResult[i].getProf());
+				row2.createCell(9).setCellValue(queryResult[i].getPos());
+				row2.createCell(10).setCellValue(queryResult[i].getSec());
+				row2.createCell(11).setCellValue(queryResult[i].getGrade());
+				row2.createCell(12).setCellValue(queryResult[i].getWS());
+				row2.createCell(13).setCellValue(queryResult[i].getProj());
+				row2.createCell(14).setCellValue(queryResult[i].getCity());
+				row2.createCell(15).setCellValue(queryResult[i].getSalary());
+				row2.createCell(16).setCellValue(queryResult[i].getOtherSalary());
+				salarySum =salarySum+queryResult[i].getSalary();
+				otherSalarySum = otherSalarySum +queryResult[i].getOtherSalary();
+				for(int j =0;j<17;j++)
 					sheet.autoSizeColumn(j);}
 				}
 				}
@@ -542,73 +558,78 @@ public class QueryCriteria extends JFrame {
 			}
 		});
 		
-		
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				SelectTask frame=new SelectTask();
+				frame.setVisible(true);dispose();
+			}
+		});
 	}
 
 	private void initComponent() throws IOException {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(EditEmployees.class.getResource("/employee/resources/SAS_Logo.png")));
-		setTitle("Query Criteria");
-		setBounds(100, 100, 400, 500);
+		setTitle("Query Employees  -  \u0627\u0644\u0627\u0633\u062A\u0639\u0644\u0627\u0645 \u0639\u0646 \u0645\u0648\u0638\u0641");
+		setBounds(100, 100, 500, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
 		
 		JLabel lblNationality = new JLabel("Nationality:");
-		lblNationality.setBounds(10, 113, 77, 14);
+		lblNationality.setBounds(15, 54, 77, 14);
 		
 		JLabel lblProfission = new JLabel("Profession:");
-		lblProfission.setBounds(10, 189, 77, 14);
+		lblProfission.setBounds(15, 97, 77, 14);
 		
 		JLabel lblPosition = new JLabel("Position:");
-		lblPosition.setBounds(321, 189, 68, 14);
+		lblPosition.setBounds(15, 138, 68, 14);
 		
 		JLabel lblSection = new JLabel("Section:");
-		lblSection.setBounds(10, 227, 55, 14);
+		lblSection.setBounds(15, 180, 55, 14);
 		
 		JLabel lblWorkingStatus = new JLabel("Working Status:");
-		lblWorkingStatus.setBounds(10, 265, 107, 14);
+		lblWorkingStatus.setBounds(15, 275, 107, 14);
 		
 		JLabel lblProjectName = new JLabel("Project Name:");
-		lblProjectName.setBounds(321, 265, 83, 14);
+		lblProjectName.setBounds(15, 316, 83, 14);
 		
 		JLabel lblProject = new JLabel("City:");
-		lblProject.setBounds(10, 303, 55, 14);
+		lblProject.setBounds(15, 361, 55, 14);
 		
 		cbNationality = new JComboBox(getAllCountries());
-		cbNationality.setBounds(84, 110, 219, 20);
+		cbNationality.setBounds(147, 51, 319, 20);
 		cbNationality.insertItemAt(" ", 0);
 		cbNationality.setSelectedIndex(0);
 		
 		cbProfession = new JComboBox(getAllProfessions());
-		cbProfession.setBounds(117, 186, 186, 20);
+		cbProfession.setBounds(147, 94, 319, 20);
 		cbProfession.insertItemAt(" ", 0);
 		cbProfession.setSelectedIndex(0);
 		
 		cbPosition = new JComboBox(getAllPositions());
-		cbPosition.setBounds(418, 186, 170, 20);
+		cbPosition.setBounds(147, 135, 319, 20);
 		cbPosition.insertItemAt(" ", 0);
 		cbPosition.setSelectedIndex(0);
 		
 		cbSection = new JComboBox(getAllSections());
-		cbSection.setBounds(117, 224, 186, 20);
+		cbSection.setBounds(147, 177, 319, 20);
 		cbSection.insertItemAt(" ", 0);
 		cbSection.setSelectedIndex(0);
 		
 		
 		cbWS = new JComboBox();
 		cbWS.setModel(new DefaultComboBoxModel(new String[] {" ", "Business Trip", "Working", "Vacation"}));
-		cbWS.setBounds(117, 262, 186, 20);
+		cbWS.setBounds(148, 272, 318, 20);
 		
 		cbProjName = new JComboBox(getAllProjects());
-		cbProjName.setBounds(418, 262, 169, 20);
+		cbProjName.setBounds(148, 313, 318, 20);
 		cbProjName.insertItemAt(" ", 0);
 		cbProjName.setSelectedIndex(0);
 		
 		cbCity = new JComboBox(getAllCities());
-		cbCity.setBounds(117, 300, 186, 20);
+		cbCity.setBounds(147, 358, 319, 20);
 		cbCity.insertItemAt(" ", 0);
 		cbCity.setSelectedIndex(0);
 		contentPane.setLayout(null);
@@ -627,146 +648,95 @@ public class QueryCriteria extends JFrame {
 		contentPane.add(cbProjName);
 		contentPane.add(cbPosition);
 		
-		btnCancel = new JButton("Cancel");
+		btnCancel = new JButton("Back  -  \u0627\u0644\u0631\u062C\u0648\u0639");
 		
 		
-		btnCancel.setBounds(505, 338, 78, 23);
+		btnCancel.setBounds(362, 409, 114, 23);
 		contentPane.add(btnCancel);
 		
-		JLabel lblEmployeeIdTo = new JLabel("Employee ID to edit:");
-		lblEmployeeIdTo.setBounds(10, 11, 140, 14);
+		JLabel lblEmployeeIdTo = new JLabel("Employee ID to query:");
+		lblEmployeeIdTo.setBounds(15, 5, 122, 14);
 		contentPane.add(lblEmployeeIdTo);
 		
 		tfID = new JTextField();
-		tfID.setBounds(130, 8, 173, 20);
+		tfID.setBounds(147, 16, 319, 20);
 		contentPane.add(tfID);
 		tfID.setColumns(10);
 		
-		btnQuery = new JButton("Query");
-		btnQuery.setBounds(423, 7, 140, 23);
+		btnQuery = new JButton("Query -  \u0627\u0633\u062A\u0639\u0644\u0627\u0645");
+		btnQuery.setBounds(15, 409, 125, 23);
 		
 		contentPane.add(btnQuery);
 		
 		lblGrade = new JLabel("Grade:");
+		lblGrade.setBounds(15, 233, 55, 14);
 		
 		cbGrade = new JComboBox();
+		cbGrade.setBounds(147, 230, 319, 20);
 		for(int i=10;i<=50;i++)
 			cbGrade.addItem(i);
 		cbGrade.insertItemAt(" ", 0);
 		cbGrade.setSelectedIndex(0);
 		
-		btnQueryExport = new JButton("Query & Export");
+		btnQueryExport = new JButton("Query & Export - \u0627\u0633\u062A\u0639\u0644\u0627\u0645 \u0648\u0627\u0633\u062A\u062E\u0631\u0627\u062C");
+		btnQueryExport.setBounds(147, 409, 205, 23);
 		
+		label = new JLabel("\u0631\u0642\u0645 \u0627\u0644\u0645\u0648\u0638\u0641");
+		label.setBounds(15, 19, 55, 14);
 		
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_contentPane.createSequentialGroup()
-											.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-												.addGroup(gl_contentPane.createSequentialGroup()
-													.addComponent(lblEmployeeIdTo, GroupLayout.PREFERRED_SIZE, 122, GroupLayout.PREFERRED_SIZE)
-													.addPreferredGap(ComponentPlacement.RELATED))
-												.addGroup(gl_contentPane.createSequentialGroup()
-													.addComponent(lblNationality, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE)
-													.addGap(49)))
-											.addGap(8)
-											.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-												.addComponent(tfID, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE)
-												.addComponent(cbNationality, 0, 148, Short.MAX_VALUE)
-												.addComponent(cbProfession, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE))
-											.addGap(205))
-										.addGroup(gl_contentPane.createSequentialGroup()
-											.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-												.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-													.addComponent(lblProjectName, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-													.addGroup(gl_contentPane.createSequentialGroup()
-														.addGap(2)
-														.addComponent(lblProject, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE))
-													.addComponent(lblWorkingStatus, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE))
-												.addComponent(btnQuery, GroupLayout.PREFERRED_SIZE, 89, GroupLayout.PREFERRED_SIZE))
-											.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-												.addGroup(gl_contentPane.createSequentialGroup()
-													.addGap(30)
-													.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-														.addComponent(cbCity, GroupLayout.PREFERRED_SIZE, 186, GroupLayout.PREFERRED_SIZE)
-														.addComponent(cbProjName, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE)))
-												.addGroup(gl_contentPane.createSequentialGroup()
-													.addGap(18)
-													.addComponent(btnQueryExport)
-													.addGap(18)
-													.addComponent(btnCancel, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)))))
-									.addGap(185))
-								.addComponent(lblProfission, GroupLayout.PREFERRED_SIZE, 77, GroupLayout.PREFERRED_SIZE))
-							.addGap(25))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblPosition, GroupLayout.PREFERRED_SIZE, 68, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(137)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(cbPosition, GroupLayout.PREFERRED_SIZE, 170, GroupLayout.PREFERRED_SIZE)
-										.addComponent(cbSection, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE)
-										.addComponent(cbGrade, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-										.addComponent(cbWS, GroupLayout.PREFERRED_SIZE, 146, GroupLayout.PREFERRED_SIZE))))
-							.addContainerGap(67, Short.MAX_VALUE))
-						.addComponent(lblSection, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(lblGrade, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap(319, Short.MAX_VALUE))))
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(3)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(tfID, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblEmployeeIdTo))
-					.addGap(20)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNationality)
-						.addComponent(cbNationality, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblProfission)
-						.addComponent(cbProfession, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblPosition)
-						.addComponent(cbPosition, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblSection)
-						.addComponent(cbSection, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblGrade)
-						.addComponent(cbGrade, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblWorkingStatus)
-						.addComponent(cbWS, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblProjectName)
-						.addComponent(cbProjName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblProject)
-						.addComponent(cbCity, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(34)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnQueryExport)
-						.addComponent(btnCancel)
-						.addComponent(btnQuery))
-					.addGap(75))
-		);
-		contentPane.setLayout(gl_contentPane);
+		label_1 = new JLabel("\u0627\u0644\u062C\u0646\u0633\u064A\u0629");
+		label_1.setBounds(15, 66, 39, 14);
+		
+		label_2 = new JLabel("\u0627\u0644\u0645\u0647\u0646\u0629");
+		label_2.setBounds(15, 110, 29, 14);
+		contentPane.setLayout(null);
+		contentPane.add(lblNationality);
+		contentPane.add(cbNationality);
+		contentPane.add(lblProfission);
+		contentPane.add(lblSection);
+		contentPane.add(lblProject);
+		contentPane.add(cbCity);
+		contentPane.add(cbProfession);
+		contentPane.add(cbSection);
+		contentPane.add(lblWorkingStatus);
+		contentPane.add(cbWS);
+		contentPane.add(lblProjectName);
+		contentPane.add(lblPosition);
+		contentPane.add(cbProjName);
+		contentPane.add(cbPosition);
+		contentPane.add(btnCancel);
+		contentPane.add(lblEmployeeIdTo);
+		contentPane.add(tfID);
+		contentPane.add(btnQuery);
+		contentPane.add(label_2);
+		contentPane.add(label);
+		contentPane.add(lblGrade);
+		contentPane.add(label_1);
+		contentPane.add(cbGrade);
+		contentPane.add(btnQueryExport);
+		
+		label_3 = new JLabel("\u0627\u0644\u0645\u0646\u0635\u0628");
+		label_3.setBounds(15, 150, 46, 14);
+		contentPane.add(label_3);
+		
+		label_4 = new JLabel("\u0627\u0644\u0642\u0633\u0645");
+		label_4.setBounds(15, 193, 46, 14);
+		contentPane.add(label_4);
+		
+		label_5 = new JLabel("\u0627\u0644\u0645\u0631\u062A\u0628\u0629");
+		label_5.setBounds(15, 241, 46, 14);
+		contentPane.add(label_5);
+		
+		label_6 = new JLabel("\u062D\u0627\u0644\u0629 \u0627\u0644\u0639\u0645\u0644");
+		label_6.setBounds(15, 286, 55, 14);
+		contentPane.add(label_6);
+		
+		label_7 = new JLabel("\u0627\u0633\u0645 \u0627\u0644\u0645\u0634\u0631\u0648\u0639");
+		label_7.setBounds(15, 328, 68, 14);
+		contentPane.add(label_7);
+		
+		label_8 = new JLabel("\u0627\u0644\u0645\u062F\u064A\u0646\u0629");
+		label_8.setBounds(15, 371, 46, 14);
+		contentPane.add(label_8);
 	}
 }

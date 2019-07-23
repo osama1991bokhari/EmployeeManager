@@ -146,11 +146,25 @@ public class EditFields extends JFrame {
 			projA = sortField(projA);
 			cityA = sortField(cityA);
 			secA = sortField(secA);
+			try {
+				Runtime.getRuntime().exec("attrib -H -R Positions.txt");
+				Runtime.getRuntime().exec("attrib -H -R Professions.txt");
+				Runtime.getRuntime().exec("attrib -H -R Sections.txt");
+				Runtime.getRuntime().exec("attrib -H -R Projects.txt");
+				Runtime.getRuntime().exec("attrib -H -R City.txt");
+				
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			
 			int choise = JOptionPane.showConfirmDialog(null, "Are you sure you want to save your changes: ","Confirm Changes",  0);
 			if(choise==0)
 			try {
 				
 				File file = new File("Positions.txt");
+				
 				OutputStream outputStream       = new FileOutputStream(file);
 				BufferedWriter bwPos = new BufferedWriter(new OutputStreamWriter(outputStream));
 				
@@ -169,7 +183,6 @@ public class EditFields extends JFrame {
 				File file5 = new File("City.txt");
 				OutputStream outputStream5      = new FileOutputStream(file5);
 				BufferedWriter bwCity = new BufferedWriter(new OutputStreamWriter(outputStream5));
-				
 				
 				
 				for (int i=0;i<posA.length;i++)
@@ -230,19 +243,36 @@ public class EditFields extends JFrame {
 				JOptionPane.showMessageDialog(null, "Changes has been saved for the fields");
 				SelectTask frame=new SelectTask();
 				frame.setVisible(true);dispose();
-				
+				Runtime.getRuntime().exec("attrib +H -R Positions.txt");
+				Runtime.getRuntime().exec("attrib +H -R Professions.txt");
+				Runtime.getRuntime().exec("attrib +H -R Sections.txt");
+				Runtime.getRuntime().exec("attrib +H -R Projects.txt");
+				Runtime.getRuntime().exec("attrib +H -R City.txt");
+
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			else{
+			try {
+				Runtime.getRuntime().exec("attrib +H -R Positions.txt");
+				Runtime.getRuntime().exec("attrib +H -R Professions.txt");
+				Runtime.getRuntime().exec("attrib +H -R Sections.txt");
+				Runtime.getRuntime().exec("attrib +H -R Projects.txt");
+				Runtime.getRuntime().exec("attrib +H -R City.txt");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
 			}
 		});
 	}
 
 	private void initComponent() throws IOException {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(EditEmployees.class.getResource("/employee/resources/SAS_Logo.png")));
-		setTitle("Edit Fields");
+		setTitle("Edit Fields  -  \u062A\u062D\u0631\u064A\u0631 \u0627\u0644\u062D\u0642\u0648\u0644");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 779, 508);
 		contentPane = new JPanel();
@@ -250,30 +280,30 @@ public class EditFields extends JFrame {
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
 		
-		JLabel lblProfession = new JLabel("Profession:");
+		JLabel lblProfession = new JLabel("Profession -  \u0627\u0644\u0645\u0647\u0646\u0629 :");
 		
 		JScrollPane scrProf = new JScrollPane();
 		
-		JLabel lblPosition = new JLabel("Position:");
+		JLabel lblPosition = new JLabel("Position - \u0627\u0644\u0645\u0646\u0635\u0628:");
 		
 		JScrollPane scrPosition = new JScrollPane();
 		
 		JScrollPane scrSection = new JScrollPane();
 		
-		JLabel lblSection = new JLabel("Section:");
+		JLabel lblSection = new JLabel("Section - \u0627\u0644\u0642\u0633\u0645:");
 		
 		JScrollPane scrProj = new JScrollPane();
 		
-		JLabel lblProjects = new JLabel("Projects:");
+		JLabel lblProjects = new JLabel("Projects - \u0627\u0644\u0645\u0634\u0631\u0648\u0639:");
 		
 		JScrollPane scrCity = new JScrollPane();
 		
-		JLabel lblCity = new JLabel("City:");
+		JLabel lblCity = new JLabel("City - \u0627\u0644\u0645\u062F\u064A\u0646\u0629:");
 		
-		btnSave = new JButton("Save");
+		btnSave = new JButton("Save - \u062D\u0641\u0638");
 		
 		
-		btnCancel = new JButton("Cancel");
+		btnCancel = new JButton("Back - \u0627\u0644\u0631\u062C\u0648\u0639");
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)

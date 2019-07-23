@@ -47,22 +47,22 @@ import java.awt.Toolkit;
 public class EditEmployees extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField tfFname;
-	private JTextField tfLname;
-	private JTextField tfEmail;
-	private JTextField tfContactLocal;
-	private JTextField tfContactHome;
-	private JTextField tfSalary;
-	private JTextField tfOtherAllowance;
+	private static JTextField tfFname;
+	private static JTextField tfLname;
+	private static JTextField tfEmail;
+	private static JTextField tfContactLocal;
+	private static JTextField tfContactHome;
+	private static JTextField tfSalary;
+	private static JTextField tfOtherAllowance;
 	private JButton btnEdit;
-	private JComboBox cbGrade;
-	private JComboBox cbNationality;
-    private JComboBox cbProfession;
-    private JComboBox cbPosition;
-    private JComboBox cbSection;
-    private JComboBox cbWS;
-    private JComboBox cbProjName;
-    private JComboBox cbCity;
+	private static JComboBox cbGrade;
+	private static JComboBox cbNationality;
+    private static JComboBox cbProfession;
+    private static JComboBox cbPosition;
+    private static JComboBox cbSection;
+    private static JComboBox cbWS;
+    private static JComboBox cbProjName;
+    private static JComboBox cbCity;
     private JButton btnCancel;
     public static final String DATA_TARGET_PATH =  "/employee/resources/targetDatas.txt";
     public static final Path DATA_TARGET_PATH2 =  FileSystems.getDefault().getPath(DATA_TARGET_PATH); 
@@ -78,6 +78,23 @@ public class EditEmployees extends JFrame {
     private static JTextField tfID;
     private JButton btnGet;
     private static JLabel lblEmployeeSelected;
+    private JLabel label;
+    private JLabel label_1;
+    private JLabel label_2;
+    private JLabel label_3;
+    private JLabel label_4;
+    private JLabel label_5;
+    private JLabel label_6;
+    private JLabel label_7;
+    private JLabel label_8;
+    private JLabel label_9;
+    private JLabel label_10;
+    private JLabel label_11;
+    private JLabel label_12;
+    private JLabel label_13;
+    private JLabel label_14;
+    private JLabel label_15;
+    private JLabel label_16;
     
 	/**
 	 * Launch the application.
@@ -257,6 +274,21 @@ public class EditEmployees extends JFrame {
 				{
 		        lblEmployeeSelected.setText(lblEmployeeSelected.getText().substring(0, 22));
 	        	JOptionPane.showMessageDialog(null, "Employee not found!");
+	        	tfFname.setText("");
+		        tfLname.setText("");
+		        cbNationality.setSelectedItem("");
+		        tfEmail.setText("");
+		        tfContactLocal.setText("");
+		        tfContactHome.setText("");
+		        cbProfession.setSelectedItem("");
+		        cbPosition.setSelectedItem("");
+		        cbSection.setSelectedItem("");
+		        cbGrade.setSelectedIndex(0);
+		        cbWS.setSelectedIndex(0);
+		        cbProjName.setSelectedIndex(0);
+		        cbCity.setSelectedIndex(0);
+		        tfSalary.setText("");
+		        tfOtherAllowance.setText("");
 				}
 
 	            return result;
@@ -401,7 +433,7 @@ BufferedReader brProj;
 if(file.exists())
 brProj = new BufferedReader(new InputStreamReader(inputStream));
 else
-brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROF)));
+brProj = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(PROJ)));
 
 String[] project = new String[100];
 String line;int i=0;
@@ -461,102 +493,102 @@ return noNull;
 	private void initComponent() throws IOException 
 	{
 		setIconImage(Toolkit.getDefaultToolkit().getImage(EditEmployees.class.getResource("/employee/resources/SAS_Logo.png")));
-		setTitle("Edit Employee");
+		setTitle("Edit Employees  -  \u062A\u062D\u0631\u064A\u0631 \u0645\u0648\u0638\u0641\u064A\u0646");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 625, 430);
+		setBounds(100, 100, 700, 480);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);	
 		setLocationRelativeTo(null);//centralize the frame
 		
 		JLabel lblFirstName = new JLabel("First Name:");
-		lblFirstName.setBounds(10, 75, 77, 14);
+		lblFirstName.setBounds(10, 98, 77, 14);
 		
 		JLabel lblLastName = new JLabel("Last Name:");
-		lblLastName.setBounds(321, 75, 83, 14);
+		lblLastName.setBounds(321, 98, 83, 14);
 		
 		JLabel lblNationality = new JLabel("Nationality:");
-		lblNationality.setBounds(10, 113, 77, 14);
+		lblNationality.setBounds(10, 135, 77, 14);
 		
 		JLabel lblContactNumberlocal = new JLabel("Contact Number (Local):");
-		lblContactNumberlocal.setBounds(10, 151, 140, 14);
+		lblContactNumberlocal.setBounds(10, 174, 140, 14);
 		
 		JLabel lblEmail = new JLabel("E-mail:");
-		lblEmail.setBounds(321, 113, 55, 14);
+		lblEmail.setBounds(321, 136, 55, 14);
 		
 		JLabel lblContactNumberhome = new JLabel("Contact Number (Home):");
-		lblContactNumberhome.setBounds(321, 151, 149, 14);
+		lblContactNumberhome.setBounds(321, 174, 149, 14);
 		
 		JLabel lblProfission = new JLabel("Profession:");
-		lblProfission.setBounds(10, 189, 77, 14);
+		lblProfission.setBounds(10, 214, 77, 14);
 		
 		JLabel lblPosition = new JLabel("Position:");
-		lblPosition.setBounds(321, 189, 68, 14);
+		lblPosition.setBounds(321, 214, 68, 14);
 		
 		JLabel lblSection = new JLabel("Section:");
-		lblSection.setBounds(10, 227, 55, 14);
+		lblSection.setBounds(10, 262, 55, 14);
 		
 		JLabel lblGrade = new JLabel("Grade:");
-		lblGrade.setBounds(321, 227, 55, 14);
+		lblGrade.setBounds(321, 262, 55, 14);
 		
 		JLabel lblWorkingStatus = new JLabel("Working Status:");
-		lblWorkingStatus.setBounds(10, 265, 107, 14);
+		lblWorkingStatus.setBounds(10, 300, 107, 14);
 		
 		JLabel lblProjectName = new JLabel("Project Name:");
-		lblProjectName.setBounds(321, 265, 83, 14);
+		lblProjectName.setBounds(321, 303, 83, 14);
 		
 		JLabel lblProject = new JLabel("City:");
-		lblProject.setBounds(10, 303, 55, 14);
+		lblProject.setBounds(10, 342, 55, 14);
 		
 		JLabel lblSalary = new JLabel("Salary:");
-		lblSalary.setBounds(321, 303, 68, 14);
+		lblSalary.setBounds(321, 342, 68, 14);
 		
 		JLabel lblAllowence = new JLabel("Other Allowance:");
-		lblAllowence.setBounds(10, 342, 107, 14);
+		lblAllowence.setBounds(10, 390, 107, 14);
 		
 		tfFname = new JTextField();
-		tfFname.setBounds(84, 72, 219, 20);
+		tfFname.setBounds(84, 82, 219, 20);
 		tfFname.setColumns(10);
 		
 		tfLname = new JTextField();
-		tfLname.setBounds(427, 72, 161, 20);
+		tfLname.setBounds(418, 95, 230, 20);
 		tfLname.setColumns(10);
 		
 		cbNationality = new JComboBox(getAllCountries());
-		cbNationality.setBounds(84, 110, 219, 20);
+		cbNationality.setBounds(84, 132, 219, 20);
 		cbNationality.insertItemAt(" ", 0);
 		cbNationality.setSelectedIndex(0);
 		tfEmail = new JTextField();
-		tfEmail.setBounds(427, 110, 161, 20);
+		tfEmail.setBounds(418, 132, 230, 20);
 		tfEmail.setColumns(10);
 		
 		tfContactLocal = new JTextField();
-		tfContactLocal.setBounds(160, 148, 143, 20);
+		tfContactLocal.setBounds(160, 186, 143, 20);
 		tfContactLocal.setColumns(10);
 		
 		tfContactHome = new JTextField();
-		tfContactHome.setBounds(468, 148, 120, 20);
+		tfContactHome.setBounds(467, 171, 181, 20);
 		tfContactHome.setColumns(10);
 		tfContactHome.setText("Optional");
 		tfContactHome.setForeground(Color.GRAY);
 		
 		cbProfession = new JComboBox(getAllProfessions());
-		cbProfession.setBounds(117, 186, 186, 20);
+		cbProfession.setBounds(117, 224, 186, 20);
 		cbProfession.insertItemAt(" ", 0);
 		cbProfession.setSelectedIndex(0);
 		
 		cbPosition = new JComboBox(getAllPositions());
-		cbPosition.setBounds(418, 186, 170, 20);
+		cbPosition.setBounds(418, 211, 230, 20);
 		cbPosition.insertItemAt(" ", 0);
 		cbPosition.setSelectedIndex(0);
 		
 		cbSection = new JComboBox(getAllSections());
-		cbSection.setBounds(117, 224, 186, 20);
+		cbSection.setBounds(117, 262, 186, 20);
 		cbSection.insertItemAt(" ", 0);
 		cbSection.setSelectedIndex(0);
 		
 		cbGrade = new JComboBox();
-		cbGrade.setBounds(418, 224, 52, 20);
+		cbGrade.setBounds(418, 259, 52, 20);
 		cbGrade.setModel(new DefaultComboBoxModel());
 		for(int i=10;i<=50;i++)
 			cbGrade.addItem(i);
@@ -565,29 +597,29 @@ return noNull;
 		
 		cbWS = new JComboBox();
 		cbWS.setModel(new DefaultComboBoxModel(new String[] {" ", "Business Trip", "Working", "Vacation"}));
-		cbWS.setBounds(117, 262, 186, 20);
+		cbWS.setBounds(117, 297, 186, 20);
 		
 		cbProjName = new JComboBox(getAllProjects());
-		cbProjName.setBounds(418, 262, 169, 20);
+		cbProjName.setBounds(418, 300, 230, 20);
 		cbProjName.insertItemAt(" ", 0);
 		cbProjName.setSelectedIndex(0);
 		
 		cbCity = new JComboBox(getAllCities());
-		cbCity.setBounds(117, 300, 186, 20);
+		cbCity.setBounds(117, 339, 186, 20);
 		cbCity.insertItemAt(" ", 0);
 		cbCity.setSelectedIndex(0);
 		
 		tfSalary = new JTextField();
-		tfSalary.setBounds(418, 300, 169, 20);
+		tfSalary.setBounds(418, 339, 230, 20);
 		tfSalary.setColumns(10);
 		
 		tfOtherAllowance = new JTextField();
-		tfOtherAllowance.setBounds(117, 339, 186, 20);
+		tfOtherAllowance.setBounds(117, 387, 186, 20);
 		tfOtherAllowance.setColumns(10);
 		
-		btnEdit = new JButton("Edit");
+		btnEdit = new JButton("Edit  -  \u062A\u062D\u0631\u064A\u0631");
 		
-		btnEdit.setBounds(418, 338, 76, 23);
+		btnEdit.setBounds(418, 407, 107, 23);
 		contentPane.setLayout(null);
 		contentPane.add(lblFirstName);
 		contentPane.add(tfFname);
@@ -621,9 +653,9 @@ return noNull;
 		contentPane.add(cbPosition);
 		contentPane.add(btnEdit);
 		
-		btnCancel = new JButton("Cancel");
+		btnCancel = new JButton("Back  -  \u0627\u0644\u0631\u062C\u0648\u0639");
 		
-		btnCancel.setBounds(505, 338, 78, 23);
+		btnCancel.setBounds(535, 407, 113, 23);
 		contentPane.add(btnCancel);
 		
 		JLabel lblEmployeeIdTo = new JLabel("Employee ID to edit:");
@@ -631,20 +663,89 @@ return noNull;
 		contentPane.add(lblEmployeeIdTo);
 		
 		tfID = new JTextField();
-		tfID.setBounds(130, 8, 173, 20);
+		tfID.setBounds(129, 22, 173, 20);
 		contentPane.add(tfID);
 		tfID.setColumns(10);
 		
-		btnGet = new JButton("Find Employee");
+		btnGet = new JButton("Find Employee - \u0627\u0644\u0628\u062D\u062B \u0639\u0646 \u0645\u0648\u0638\u0641");
 		
 		
-		btnGet.setBounds(423, 7, 140, 23);
+		btnGet.setBounds(418, 21, 230, 23);
 		contentPane.add(btnGet);
 		
 		lblEmployeeSelected = new JLabel("Selected Employee ID: ");
 		lblEmployeeSelected.setForeground(Color.BLUE);
-		lblEmployeeSelected.setBounds(10, 36, 293, 14);
+		lblEmployeeSelected.setBounds(10, 53, 293, 14);
 		contentPane.add(lblEmployeeSelected);
+		
+		label = new JLabel("\u0631\u0642\u0645 \u0627\u0644\u0645\u0648\u0638\u0641");
+		label.setBounds(10, 25, 77, 14);
+		contentPane.add(label);
+		
+		label_1 = new JLabel("\u0627\u0644\u0627\u0633\u0645 \u0627\u0644\u0623\u062E\u064A\u0631");
+		label_1.setBounds(318, 111, 58, 14);
+		contentPane.add(label_1);
+		
+		label_2 = new JLabel("\u0627\u0644\u0625\u064A\u0645\u064A\u0644");
+		label_2.setBounds(318, 149, 46, 14);
+		contentPane.add(label_2);
+		
+		label_3 = new JLabel("\u0631\u0642\u0645 \u0627\u0644\u062A\u0648\u0627\u0635\u0644 \u0627\u0644\u062F\u0648\u0644\u064A");
+		label_3.setBounds(321, 189, 107, 14);
+		contentPane.add(label_3);
+		
+		label_4 = new JLabel("\u0627\u0644\u0645\u0646\u0635\u0628");
+		label_4.setBounds(318, 227, 46, 14);
+		contentPane.add(label_4);
+		
+		label_5 = new JLabel("\u0627\u0644\u0645\u0631\u062A\u0628\u0629");
+		label_5.setBounds(318, 275, 46, 14);
+		contentPane.add(label_5);
+		
+		label_6 = new JLabel("\u0627\u0633\u0645 \u0627\u0644\u0645\u0634\u0631\u0648\u0639");
+		label_6.setBounds(321, 317, 68, 14);
+		contentPane.add(label_6);
+		
+		label_7 = new JLabel("\u0627\u0644\u0631\u0627\u062A\u0628");
+		label_7.setBounds(321, 355, 46, 14);
+		contentPane.add(label_7);
+		
+		label_8 = new JLabel("\u0627\u0644\u0625\u0633\u0645 \u0627\u0644\u0623\u0648\u0644");
+		label_8.setBounds(10, 110, 64, 14);
+		contentPane.add(label_8);
+		
+		label_9 = new JLabel("\u0627\u0644\u062C\u0646\u0633\u064A\u0629");
+		label_9.setBounds(10, 149, 46, 14);
+		contentPane.add(label_9);
+		
+		label_10 = new JLabel("\u0631\u0642\u0645 \u0627\u0644\u062A\u0648\u0627\u0635\u0644 \u0627\u0644\u0645\u062D\u0644\u064A");
+		label_10.setBounds(10, 189, 102, 14);
+		contentPane.add(label_10);
+		
+		label_11 = new JLabel("\u0627\u0644\u0645\u0647\u0646\u0629");
+		label_11.setBounds(10, 227, 46, 14);
+		contentPane.add(label_11);
+		
+		label_12 = new JLabel("\u0627\u0644\u0642\u0633\u0645");
+		label_12.setBounds(10, 275, 46, 14);
+		contentPane.add(label_12);
+		
+		label_13 = new JLabel("\u062D\u0627\u0644\u0629 \u0627\u0644\u0639\u0645\u0644");
+		label_13.setBounds(10, 317, 77, 14);
+		contentPane.add(label_13);
+		
+		label_14 = new JLabel("\u0627\u0644\u0645\u062F\u064A\u0646\u0629");
+		label_14.setBounds(10, 355, 46, 14);
+		contentPane.add(label_14);
+		
+		label_15 = new JLabel("\u0627\u0644\u0639\u0644\u0627\u0648\u0627\u062A \u0627\u0644\u0623\u062E\u0631\u0649");
+		label_15.setBounds(10, 407, 82, 14);
+		contentPane.add(label_15);
+		
+		label_16 = new JLabel("\u0627\u0644\u0645\u0648\u0638\u0641 \u0627\u0644\u0645\u062E\u062A\u0627\u0631");
+		label_16.setForeground(Color.BLUE);
+		label_16.setBounds(203, 53, 77, 14);
+		contentPane.add(label_16);
 	}
 	
 	private void createEvent() 
@@ -686,8 +787,12 @@ return noNull;
 				String [] fields= new String [15];
 				createConnection();
 		        fields = getEmployee(tfID.getText());
-		        if(fields == null)
+		        if(fields == null){
 		        	JOptionPane.showMessageDialog(null,	"Employee not found");
+		        	System.out.println("nononoonooonono");
+		        	
+		        
+		        }
 		        else{
 		        shutdown();
 		        tfFname.setText(fields[0]);

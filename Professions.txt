@@ -1,5 +1,4 @@
 Accountant
-Business Manager
 HR Manager
 Network Engineer
 Programmer
